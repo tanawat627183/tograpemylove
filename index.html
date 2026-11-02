@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Anniversary ค้าบคุณแฟนสุดที่รัก 💖</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Mali -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    body { font-family: 'Mali', cursive; }
+    .perspective { perspective: 1000px; }
+    .preserve-3d { transform-style: preserve-3d; }
+    .backface-hidden { backface-visibility: hidden; }
+    .rotate-y-180 { transform: rotateY(180deg); }
+  </style>
+</head>
+<body class="bg-gradient-to-b from-pink-100 via-rose-50 to-purple-100 min-h-screen text-slate-700 flex flex-col items-center p-4 selection:bg-pink-200">
+
+  <!-- 1. Passcode Lock Screen (6 หลัก) -->
+  <section id="lock-screen" class="fixed inset-0 z-50 bg-rose-50/95 backdrop-blur-md flex flex-col items-center justify-center p-6 transition-all duration-500">
+    <div class="bg-white/90 p-8 rounded-3xl shadow-xl border-4 border-pink-200 max-w-xs w-full text-center">
+      <div class="text-4xl mb-2 animate-bounce">🔐</div>
+      <h2 class="text-xl font-bold text-rose-500 mb-1">รหัสลับวันเวลา</h2>
+      <p class="text-xs text-rose-400 mb-6">กดรหัสคู่รัก 6 หลักเพื่อเปิดกล่องความทรงจำ ✨</p>
+      
+      <!-- Dots 6 ช่อง -->
+      <div id="pin-dots" class="flex justify-center gap-2.5 mb-8">
+        <span class="w-3.5 h-3.5 rounded-full border-2 border-rose-300 bg-white transition-all"></span>
+        <span class="w-3.5 h-3.5 rounded-full border-2 border-rose-300 bg-white transition-all"></span>
+        <span class="w-3.5 h-3.5 rounded-full border-2 border-rose-300 bg-white transition-all"></span>
+        <span class="w-3.5 h-3.5 rounded-full border-2 border-rose-300 bg-white transition-all"></span>
+        <span class="w-3.5 h-3.5 rounded-full border-2 border-rose-300 bg-white transition-all"></span>
+        <span class="w-3.5 h-3.5 rounded-full border-2 border-rose-300 bg-white transition-all"></span>
+      </div>
+
+      <!-- Keypad -->
+      <div class="grid grid-cols-3 gap-3">
+        <button onclick="pressPin('1')" class="h-13 py-3 rounded-2xl bg-pink-50 hover:bg-pink-100 text-rose-600 font-bold text-lg active:scale-95 transition">1</button>
+        <button onclick="pressPin('2')" class="h-13 py-3 rounded-2xl bg-pink-50 hover:bg-pink-100 text-rose-600 font-bold text-lg active:scale-95 transition">2</button>
+        <button onclick="pressPin('3')" class="h-13 py-3 rounded-2xl bg-pink-50 hover:bg-pink-100 text-rose-600 font-bold text-lg active:scale-95 transition">3</button>
+        <button onclick="pressPin('4')" class="h-13 py-3 rounded-2xl bg-pink-50 hover:bg-pink-100 text-rose-600 font-bold text-lg active:scale-95 transition">4</button>
+        <button onclick="pressPin('5')" class="h-13 py-3 rounded-2xl bg-pink-50 hover:bg-pink-100 text-rose-600 font-bold text-lg active:scale-95 transition">5</button>
+        <button onclick="pressPin('6')" class="h-13 py-3 rounded-2xl bg-pink-50 hover:bg-pink-100 text-rose-600 font-bold text-lg active:scale-95 transition">6</button>
+        <button onclick="pressPin('7')" class="h-13 py-3 rounded-2xl bg-pink-50 hover:bg-pink-100 text-rose-600 font-bold text-lg active:scale-95 transition">7</button>
+        <button onclick="pressPin('8')" class="h-13 py-3 rounded-2xl bg-pink-50 hover:bg-pink-100 text-rose-600 font-bold text-lg active:scale-95 transition">8</button>
+        <button onclick="pressPin('9')" class="h-13 py-3 rounded-2xl bg-pink-50 hover:bg-pink-100 text-rose-600 font-bold text-lg active:scale-95 transition">9</button>
+        <button onclick="clearPin()" class="h-13 py-3 rounded-2xl bg-slate-50 text-slate-400 font-medium text-xs active:scale-95 transition">ลบ</button>
+        <button onclick="pressPin('0')" class="h-13 py-3 rounded-2xl bg-pink-50 hover:bg-pink-100 text-rose-600 font-bold text-lg active:scale-95 transition">0</button>
+        <button onclick="checkPin()" class="h-13 py-3 rounded-2xl bg-rose-400 hover:bg-rose-500 text-white font-bold active:scale-95 transition">💖</button>
+      </div>
+      <p id="error-msg" class="text-xs text-rose-500 mt-4 opacity-0 transition-opacity font-medium">รหัสยังไม่ใช่น้าาที่รัก ลองนึกดูดีๆ แต่รหัสยากมากก 🥺</p>
+    </div>
+  </section>
+
+  <!-- 2. Main Anniversary Content -->
+  <main class="max-w-md w-full py-6 flex flex-col items-center gap-6 pb-12">
+
+    <!-- Header -->
+    <header class="text-center w-full">
+      <div class="inline-block px-4 py-1.5 bg-rose-200/60 text-rose-600 rounded-full text-xs font-semibold mb-2 shadow-sm">
+        🌸 Our Special Day
+      </div>
+      <h1 class="text-2xl font-bold text-rose-600">Happy Anniversary</h1>
+      <p class="text-xs text-rose-400 mt-0.5">ขอบคุณที่เข้ามาเป็นรอยยิ้มให้กันเสมอมานะ ทะเลาะกันบ้างแต่เค้าก็รักเธอเสมอนะ 🌷</p>
+    </header>
+
+    <!-- Real-Time Counter Card -->
+    <div class="bg-white/90 w-full p-5 rounded-3xl shadow-lg border border-pink-100 text-center relative overflow-hidden">
+      <span class="text-3xl absolute -right-2 -bottom-2 opacity-20">🎀</span>
+      <p class="text-xs text-rose-400 font-medium mb-3">ช่วงเวลาแห่งความสุขที่อยู่ด้วยกัน</p>
+      <div class="grid grid-cols-4 gap-2">
+        <div class="bg-rose-50 p-2.5 rounded-2xl">
+          <span id="days" class="text-xl font-bold text-rose-500 block">0</span>
+          <span class="text-[10px] text-rose-400">วัน</span>
+        </div>
+        <div class="bg-rose-50 p-2.5 rounded-2xl">
+          <span id="hours" class="text-xl font-bold text-rose-500 block">0</span>
+          <span class="text-[10px] text-rose-400">ชั่วโมง</span>
+        </div>
+        <div class="bg-rose-50 p-2.5 rounded-2xl">
+          <span id="minutes" class="text-xl font-bold text-rose-500 block">0</span>
+          <span class="text-[10px] text-rose-400">นาที</span>
+        </div>
+        <div class="bg-rose-50 p-2.5 rounded-2xl">
+          <span id="seconds" class="text-xl font-bold text-rose-500 block">0</span>
+          <span class="text-[10px] text-rose-400">วินาที</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Polaroid Slider Section (ใส่รูปทั้ง 3 รูป) -->
+    <div class="w-full flex flex-col items-center">
+      <div class="flex items-center justify-between w-full px-2 mb-2">
+        <span class="text-xs font-bold text-rose-500">📸 Our Sweet Memories</span>
+        <span class="text-[11px] text-rose-400">แตะที่รูปเพื่ออ่านการ์ดลับ 💌</span>
+      </div>
+
+      <!-- Carousel Container -->
+      <div class="relative w-72 h-96 perspective" id="carousel-area">
+        
+        <!-- Slide 1 -->
+        <div class="photo-slide absolute inset-0 transition-all duration-500 cursor-pointer" onclick="flipCard(this)">
+          <div class="card-inner relative w-full h-full preserve-3d duration-500 rounded-3xl shadow-xl">
+            <div class="absolute inset-0 bg-white p-3.5 rounded-3xl flex flex-col items-center backface-hidden border border-pink-100">
+              <div class="w-full h-72 bg-pink-50 rounded-2xl overflow-hidden mb-3">
+                <img src="1793620771342.jpg" alt="Memory 1" class="w-full h-full object-cover">
+              </div>
+              <p class="text-xs font-bold text-rose-500">ยืนเคียงข้างกันในทุกๆ วัน 🫶</p>
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-br from-rose-400 to-pink-500 p-6 rounded-3xl flex flex-col items-center justify-center text-center backface-hidden rotate-y-180 text-white shadow-xl">
+              <span class="text-3xl mb-3">💐</span>
+              <p class="text-sm leading-relaxed">
+                "ไม่ว่าจะผ่านไปกี่วัน<br>
+                เค้าก็ยังอยากยืนข้างเธอแบบนี้<br>
+                ขอบคุณที่คอยเป็นพลังบวกให้กันเสมอนะ"
+              </p>
+              <span class="text-xs mt-4 text-pink-100 font-medium">รักที่สุดเลย 🤍</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="photo-slide absolute inset-0 transition-all duration-500 opacity-0 pointer-events-none cursor-pointer" onclick="flipCard(this)">
+          <div class="card-inner relative w-full h-full preserve-3d duration-500 rounded-3xl shadow-xl">
+            <div class="absolute inset-0 bg-white p-3.5 rounded-3xl flex flex-col items-center backface-hidden border border-pink-100">
+              <div class="w-full h-72 bg-pink-50 rounded-2xl overflow-hidden mb-3">
+                <img src="1793620778804.jpg" alt="Memory 2" class="w-full h-full object-cover">
+              </div>
+              <p class="text-xs font-bold text-rose-500">รอยยิ้มและดอกบัวช่อโปรด 🌸</p>
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-br from-rose-400 to-pink-500 p-6 rounded-3xl flex flex-col items-center justify-center text-center backface-hidden rotate-y-180 text-white shadow-xl">
+              <span class="text-3xl mb-3">✨</span>
+              <p class="text-sm leading-relaxed">
+                "เวลาเห็นเธอทำหน้าตาน่ารัก<br>
+                แล้วถือดอกไม้<br>
+                โลกสดใสขึ้นเป็นกองเลยนะรู้ไหม"
+              </p>
+              <span class="text-xs mt-4 text-pink-100 font-medium">น่ารักที่สุดในโลก 🐰</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="photo-slide absolute inset-0 transition-all duration-500 opacity-0 pointer-events-none cursor-pointer" onclick="flipCard(this)">
+          <div class="card-inner relative w-full h-full preserve-3d duration-500 rounded-3xl shadow-xl">
+            <div class="absolute inset-0 bg-white p-3.5 rounded-3xl flex flex-col items-center backface-hidden border border-pink-100">
+              <div class="w-full h-72 bg-pink-50 rounded-2xl overflow-hidden mb-3">
+                <img src="1793620772237.jpg" alt="Memory 3" class="w-full h-full object-cover">
+              </div>
+              <p class="text-xs font-bold text-rose-500">เติมพลังให้กันทุกวัน 💖</p>
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-br from-rose-400 to-pink-500 p-6 rounded-3xl flex flex-col items-center justify-center text-center backface-hidden rotate-y-180 text-white shadow-xl">
+              <span class="text-3xl mb-3">🥰</span>
+              <p class="text-sm leading-relaxed">
+                "ขอหอมแก้มเป็นกำลังใจแบบนี้<br>
+                ไปเรื่อยๆ ทุกปีเลยนะ<br>
+                อยู่เป็นความสุขของกันและกันตลอดไปนะ"
+              </p>
+              <span class="text-xs mt-4 text-pink-100 font-medium">รักแฟนมากๆ ครับ 🌷</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Controls & Dots -->
+      <div class="flex items-center gap-4 mt-4">
+        <button onclick="prevSlide()" class="w-9 h-9 rounded-full bg-white shadow-md text-rose-500 font-bold flex items-center justify-center hover:bg-rose-50 active:scale-95 transition">‹</button>
+        <div class="flex gap-2" id="slide-indicators">
+          <span class="w-2.5 h-2.5 rounded-full bg-rose-500 transition-all"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-rose-200 transition-all"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-rose-200 transition-all"></span>
+        </div>
+        <button onclick="nextSlide()" class="w-9 h-9 rounded-full bg-white shadow-md text-rose-500 font-bold flex items-center justify-center hover:bg-rose-50 active:scale-95 transition">›</button>
+      </div>
+    </div>
+
+    <!-- 4. Gachapon Coupon Section -->
+    <div class="bg-white/90 w-full p-6 rounded-3xl shadow-lg border border-pink-100 text-center">
+      <div class="text-2xl mb-1">🎁</div>
+      <h3 class="font-bold text-rose-600 text-sm">ตู้สุ่มคูปองตามใจแฟน</h3>
+      <p class="text-[11px] text-rose-400 mb-4">สุ่มรับสิทธิ์พิเศษสำหรับแฟนคนเก่งวันนี้</p>
+
+      <div id="coupon-display" class="bg-pink-50/70 border-2 border-dashed border-pink-300 rounded-2xl p-4 mb-4 min-h-[70px] flex items-center justify-center">
+        <span class="text-xs text-rose-400 font-medium">กดปุ่มด้านล่างเพื่อลุ้นรางวัล 🪄</span>
+      </div>
+
+      <button onclick="drawCoupon()" class="w-full py-3 bg-gradient-to-r from-rose-400 to-pink-400 hover:from-rose-500 hover:to-pink-500 text-white rounded-2xl font-bold text-xs shadow-md shadow-pink-200 active:scale-95 transition">
+        กดสุ่มคูปอง 🎲
+      </button>
+    </div>
+
+  </main>
+
+  <script>
+    // --- การตั้งค่าข้อมูล ---
+    const CORRECT_PIN = "371425"; // รหัสผ่าน 6 หลัก
+    const START_DATE = new Date("2024-01-01T00:00:00"); // ปรับวันที่เริ่มต้นคบกันตามจริง
+
+    const COUPONS = [
+      "คูปอง: พาไปกินของอร่อยตามใจ 1 มื้อ 🍕",
+      "คูปอง: บริการนวดไหล่/นวดหลัง 30 นาที 💆‍♀️",
+      "คูปอง: ห้ามขัดใจแฟน 1 วันเต็มๆ 👑",
+      "คูปอง: ห้ามงอล ",
+      "คูปอง: ง้อสำเร็จทันทีไม่มีเงื่อนไข 💖"
+    ];
+
+    let enteredPin = "";
+    let currentSlide = 0;
+
+    // ระบบ Passcode 6 หลัก
+    function pressPin(num) {
+      if (enteredPin.length < 6) {
+        enteredPin += num;
+        updateDots();
+        if (enteredPin.length === 6) {
+          checkPin();
+        }
+      }
+    }
+
+    function clearPin() {
+      enteredPin = "";
+      updateDots();
+      document.getElementById('error-msg').classList.add('opacity-0');
+    }
+
+    function updateDots() {
+      const dots = document.querySelectorAll('#pin-dots span');
+      dots.forEach((dot, index) => {
+        if (index < enteredPin.length) {
+          dot.classList.add('bg-rose-400', 'border-rose-400');
+          dot.classList.remove('bg-white');
+        } else {
+          dot.classList.remove('bg-rose-400', 'border-rose-400');
+          dot.classList.add('bg-white');
+        }
+      });
+    }
+
+    function checkPin() {
+      if (enteredPin === CORRECT_PIN) {
+        confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+        const lock = document.getElementById('lock-screen');
+        lock.classList.add('opacity-0', 'pointer-events-none');
+        setTimeout(() => lock.style.display = 'none', 500);
+      } else {
+        const error = document.getElementById('error-msg');
+        error.classList.remove('opacity-0');
+        clearPin();
+      }
+    }
+
+    // ตัวนับเวลาแบบ Real-time
+    function updateCounter() {
+      const now = new Date();
+      const diff = now - START_DATE;
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      document.getElementById('days').innerText = days;
+      document.getElementById('hours').innerText = hours;
+      document.getElementById('minutes').innerText = minutes;
+      document.getElementById('seconds').innerText = seconds;
+    }
+    setInterval(updateCounter, 1000);
+    updateCounter();
+
+    // ควบคุม Slider รูปถ่าย
+    function showSlide(index) {
+      const slides = document.querySelectorAll('.photo-slide');
+      const dots = document.querySelectorAll('#slide-indicators span');
+
+      slides.forEach((slide, i) => {
+        const inner = slide.querySelector('.card-inner');
+        if (inner) inner.classList.remove('rotate-y-180'); // รีเซ็ตการพลิกการ์ดกลับด้านหน้า
+
+        if (i === index) {
+          slide.classList.remove('opacity-0', 'pointer-events-none');
+          slide.classList.add('opacity-100');
+        } else {
+          slide.classList.add('opacity-0', 'pointer-events-none');
+          slide.classList.remove('opacity-100');
+        }
+      });
+
+      dots.forEach((dot, i) => {
+        if (i === index) {
+          dot.classList.remove('bg-rose-200');
+          dot.classList.add('bg-rose-500');
+        } else {
+          dot.classList.remove('bg-rose-500');
+          dot.classList.add('bg-rose-200');
+        }
+      });
+    }
+
+    function nextSlide() {
+      const slides = document.querySelectorAll('.photo-slide');
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }
+
+    function prevSlide() {
+      const slides = document.querySelectorAll('.photo-slide');
+      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+      showSlide(currentSlide);
+    }
+
+    // พลิกการ์ดหน้า-หลัง
+    function flipCard(cardWrapper) {
+      const card = cardWrapper.querySelector('.card-inner');
+      card.classList.toggle('rotate-y-180');
+    }
+
+    // ระบบสุ่มคูปอง
+    function drawCoupon() {
+      const display = document.getElementById('coupon-display');
+      display.innerHTML = `<span class="text-xs text-rose-400 animate-pulse">กำลังเขย่ากล่องสุ่ม... 🎁</span>`;
+      
+      setTimeout(() => {
+        const randomIndex = Math.floor(Math.random() * COUPONS.length);
+        display.innerHTML = `<span class="text-xs font-bold text-rose-600 animate-bounce">${COUPONS[randomIndex]}</span>`;
+        confetti({ particleCount: 50, spread: 60, origin: { y: 0.85 } });
+      }, 500);
+    }
+  </script>
+</body>
+</html>
