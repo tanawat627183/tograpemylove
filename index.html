@@ -23,6 +23,20 @@
     .backface-hidden { backface-visibility: hidden; }
     .rotate-y-180 { transform: rotateY(180deg); }
 
+    /* ละอองลอยฉากหลัง */
+    .bg-float-item {
+      position: fixed;
+      top: -10%;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.6;
+      animation: fallDown linear infinite;
+    }
+    @keyframes fallDown {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+      100% { transform: translateY(115vh) rotate(360deg); opacity: 0; }
+    }
+
     /* Touch Sparkles */
     .tap-sparkle {
       position: fixed;
@@ -76,11 +90,28 @@
       0% { transform: translateY(-100%) rotate(25deg); }
       100% { transform: translateY(100%) rotate(25deg); }
     }
+
+    /* เทปวาชิแปะรูป */
+    .washi-tape {
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 48px;
+      height: 14px;
+      background: rgba(216, 180, 254, 0.7);
+      backdrop-filter: blur(2px);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      z-index: 10;
+    }
   </style>
 </head>
-<body class="bg-gradient-to-b from-purple-100 via-purple-50 to-amber-50 min-h-screen text-slate-700 flex flex-col items-center p-3 sm:p-4 overflow-x-hidden selection:bg-purple-200">
+<body class="bg-gradient-to-b from-purple-100 via-purple-50 to-amber-50 min-h-screen text-slate-700 flex flex-col items-center p-3 sm:p-4 overflow-x-hidden selection:bg-purple-200 relative">
 
-  <!-- 1. Passcode Lock Screen (6 หลัก โทนม่วง-ครีม) -->
+  <!-- Background Falling Particles Container -->
+  <div id="particles-container" class="fixed inset-0 pointer-events-none z-0 overflow-hidden"></div>
+
+  <!-- 1. Passcode Lock Screen -->
   <section id="lock-screen" class="fixed inset-0 z-50 bg-purple-900/40 backdrop-blur-md flex flex-col items-center justify-center p-4 transition-all duration-500">
     <div class="bg-white/95 p-6 rounded-[2.5rem] shadow-2xl border-4 border-purple-200 w-full max-w-[320px] text-center relative overflow-hidden">
       <div class="text-4xl mb-2 animate-bounce">🍇</div>
@@ -117,7 +148,7 @@
   </section>
 
   <!-- 2. Main Anniversary Content Container -->
-  <main class="w-full max-w-[360px] sm:max-w-sm flex flex-col items-center gap-5 pt-3 pb-20">
+  <main class="w-full max-w-[360px] sm:max-w-sm flex flex-col items-center gap-5 pt-3 pb-24 z-10">
 
     <!-- Header Section -->
     <header class="text-center w-full px-2">
@@ -130,7 +161,7 @@
       </p>
     </header>
 
-    <!-- Real-Time Counter Card (โทนม่วง Lavender) -->
+    <!-- Real-Time Counter Card -->
     <div class="bg-white/90 backdrop-blur-md w-full p-4 sm:p-5 rounded-3xl shadow-lg border border-purple-100 text-center relative overflow-hidden">
       <span class="text-3xl absolute -right-1 -bottom-1 opacity-20 pointer-events-none">💜</span>
       <p class="text-xs text-purple-500 font-medium mb-3 flex items-center justify-center gap-1.5">
@@ -158,7 +189,6 @@
 
     <!-- 3. Where It All Began: ตั๋วความทรงจำฟิวเจอร์ปาร์ครังสิต -->
     <div class="w-full bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-700 text-white p-5 rounded-3xl shadow-xl border-2 border-purple-300 relative overflow-hidden">
-      <!-- รอยบากตั๋วซ้ายขวา -->
       <span class="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-purple-100 rounded-full"></span>
       <span class="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-purple-100 rounded-full"></span>
 
@@ -183,7 +213,7 @@
       </div>
     </div>
 
-    <!-- 4. Polaroid Slider Section (รูปคู่ 3 รูปเดิม) -->
+    <!-- 4. Polaroid Slider Section -->
     <div class="w-full flex flex-col items-center">
       <div class="flex items-center justify-between w-full px-2 mb-2">
         <span class="text-xs font-bold text-purple-700 flex items-center gap-1">📸 Our Sweet Memories</span>
@@ -277,7 +307,6 @@
       <p class="text-xs text-purple-700 font-bold mt-1">ซองการ์ดสุ่มใบแรลิมิเต็ด</p>
       <p class="text-[10px] text-purple-400 mb-4">แตะที่ซองการ์ดเพื่อเปิดลุ้นการ์ดไซน์ทอง 🌟</p>
 
-      <!-- ซองการ์ดฟอยล์ -->
       <div id="card-pack" onclick="openPhotocardPack()" class="w-48 h-64 bg-gradient-to-tr from-purple-600 via-indigo-500 to-pink-500 rounded-2xl shadow-2xl p-3 border-2 border-amber-300 relative cursor-pointer active:scale-95 transition-transform flex flex-col items-center justify-between overflow-hidden">
         <div class="w-full border-b border-dashed border-white/60 pb-1 text-[9px] text-white/90 flex justify-between">
           <span>LIMITED EDITION</span>
@@ -294,7 +323,7 @@
       </div>
     </div>
 
-    <!-- 6. Mini-Game: Gachapon Machine (ตู้หมุนไข่กาชาปองความรัก) -->
+    <!-- 6. Mini-Game: Gachapon Machine -->
     <div class="w-full bg-white/90 backdrop-blur-md rounded-[2.5rem] p-5 shadow-xl border border-purple-200 flex flex-col items-center relative">
       <div class="inline-block px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-[11px] font-bold mb-2">
         🎰 ตู้หมุนไข่ความรักตามใจเกรป
@@ -329,7 +358,7 @@
       </div>
     </div>
 
-    <!-- 7. Grape's Favorite Menu: ใบเสร็จความสุขตามใจเกรป -->
+    <!-- 7. Grape's Favorite Menu -->
     <div class="w-full bg-white rounded-3xl p-5 shadow-lg border-2 border-dashed border-purple-300 relative text-left">
       <div class="text-center border-b border-dashed border-purple-200 pb-2 mb-3">
         <span class="text-lg">🧾</span>
@@ -347,7 +376,7 @@
         </div>
         <div class="flex justify-between items-center">
           <div>
-            <p class="font-bold text-purple-800">2. HOTPOT MAN </p>
+            <p class="font-bold text-purple-800">2. HOTPOT MAN 🍲</p>
             <p class="text-[10px] text-slate-400">*กินเก่งที่สุด</p>
           </div>
           <span class="font-bold text-purple-600">รอคิวนานมาก</span>
@@ -367,106 +396,179 @@
       </div>
     </div>
 
-    <!-- 8. Our Story Photo Dump (คลังรูปภาพเพิ่มเติม) -->
+    <!-- 8. Our Story Photo Dump (แก้ไขโครงสร้าง Grid 2 คอลัมน์สมบูรณ์แบบ + ระบบซูมดูรูป) -->
     <div class="w-full bg-white/90 backdrop-blur-md rounded-[2.5rem] p-5 shadow-xl border border-purple-200 text-center">
       <div class="inline-block px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-[11px] font-bold mb-1">
         📁 Our Photo Dump
       </div>
       <p class="text-xs font-bold text-purple-800 mt-1">รวมโมเมนต์น่ารักของเกรป</p>
-      <p class="text-[10px] text-purple-400 mb-4">แตะที่รูปเพื่อดูความทรงจำ 🤍</p>
+      <p class="text-[10px] text-purple-400 mb-4">แตะที่รูปเพื่อขยายดูรูปสวยๆ 🤍</p>
 
-      <!-- ตารางรูป 4 ช่อง (สามารถเปลี่ยนหรือใส่รูปเพิ่มได้ตามใจชอบ) -->
-      <div class="grid grid-cols-2 gap-2.5">
-        <div class="bg-purple-50 p-2 rounded-2xl border border-purple-100 shadow-sm">
-          <div class="w-full h-32 rounded-xl overflow-hidden mb-1.5 bg-purple-100">
-            <img src="01.jpg" alt="Gallery 1" class="w-full h-full object-cover">
+      <!-- ตารางรูป 2 คอลัมน์ที่ปิดแท็กถูกต้อง -->
+      <div class="grid grid-cols-2 gap-3 w-full">
+        
+        <!-- รูปที่ 1 -->
+        <div onclick="openPhotoModal('01.jpg', 'เซลฟี่มุมโปรดของยัยเกรป 🌷')" class="cursor-pointer bg-white p-2 pb-3 rounded-2xl shadow-sm border border-purple-100 relative hover:scale-[1.02] active:scale-95 transition-transform rotate-[-1deg]">
+          <div class="washi-tape"></div>
+          <div class="w-full h-36 rounded-xl overflow-hidden bg-purple-50 mb-1.5 mt-1">
+            <img src="01.jpg" alt="01" class="w-full h-full object-cover">
+          </div>
+          <p class="text-[10px] font-bold text-purple-700 truncate">เซลฟี่คนสวย 🫶</p>
+        </div>
+
+        <!-- รูปที่ 2 -->
+        <div onclick="openPhotoModal('02.jpg', 'แก้มกลมๆ น่ารักที่สุด 🥰')" class="cursor-pointer bg-white p-2 pb-3 rounded-2xl shadow-sm border border-purple-100 relative hover:scale-[1.02] active:scale-95 transition-transform rotate-[1.5deg]">
+          <div class="washi-tape"></div>
+          <div class="w-full h-36 rounded-xl overflow-hidden bg-purple-50 mb-1.5 mt-1">
+            <img src="02.jpg" alt="02" class="w-full h-full object-cover">
+          </div>
+          <p class="text-[10px] font-bold text-purple-700 truncate">แก้มกลมๆ 🤍</p>
+        </div>
+
+        <!-- รูปที่ 3 -->
+        <div onclick="openPhotoModal('03.jpg', 'แอบถ่ายตอนเผลอ แต่น่ารักมาก 🌸')" class="cursor-pointer bg-white p-2 pb-3 rounded-2xl shadow-sm border border-purple-100 relative hover:scale-[1.02] active:scale-95 transition-transform rotate-[1deg]">
+          <div class="washi-tape"></div>
+          <div class="w-full h-36 rounded-xl overflow-hidden bg-purple-50 mb-1.5 mt-1">
+            <img src="03.jpg" alt="03" class="w-full h-full object-cover">
+          </div>
+          <p class="text-[10px] font-bold text-purple-700 truncate">เผลอยังน่ารัก 🐰</p>
+        </div>
+
+        <!-- รูปที่ 4 -->
+        <div onclick="openPhotoModal('04.jpg', 'วันกินแหลกของยัยเกรป 🍕')" class="cursor-pointer bg-white p-2 pb-3 rounded-2xl shadow-sm border border-purple-100 relative hover:scale-[1.02] active:scale-95 transition-transform rotate-[-1.5deg]">
+          <div class="washi-tape"></div>
+          <div class="w-full h-36 rounded-xl overflow-hidden bg-purple-50 mb-1.5 mt-1">
+            <img src="04.jpg" alt="04" class="w-full h-full object-cover">
+          </div>
+          <p class="text-[10px] font-bold text-purple-700 truncate">โหมดกินเก่ง 🍜</p>
+        </div>
+
+        <!-- รูปที่ 5 -->
+        <div onclick="openPhotoModal('05.jpg', 'ถ่ายรูปคู่กัน สดใสทุกที ✨')" class="cursor-pointer bg-white p-2 pb-3 rounded-2xl shadow-sm border border-purple-100 relative hover:scale-[1.02] active:scale-95 transition-transform rotate-[-1deg]">
+          <div class="washi-tape"></div>
+          <div class="w-full h-36 rounded-xl overflow-hidden bg-purple-50 mb-1.5 mt-1">
+            <img src="05.jpg" alt="05" class="w-full h-full object-cover">
+          </div>
+          <p class="text-[10px] font-bold text-purple-700 truncate">คู่กันเสมอ 💖</p>
+        </div>
+
+        <!-- รูปที่ 6 -->
+        <div onclick="openPhotoModal('06.jpg', 'รอยยิ้มหวานๆ ของคนโปรด 🌷')" class="cursor-pointer bg-white p-2 pb-3 rounded-2xl shadow-sm border border-purple-100 relative hover:scale-[1.02] active:scale-95 transition-transform rotate-[1deg]">
+          <div class="washi-tape"></div>
+          <div class="w-full h-36 rounded-xl overflow-hidden bg-purple-50 mb-1.5 mt-1">
+            <img src="06.jpg" alt="06" class="w-full h-full object-cover">
+          </div>
+          <p class="text-[10px] font-bold text-purple-700 truncate">ยิ้มหวานมาก 🍓</p>
+        </div>
+
+        <!-- รูปที่ 7 -->
+        <div onclick="openPhotoModal('07.jpg', 'วิดีโอคอลคิดถึงกันทุกคืน 📱')" class="cursor-pointer bg-white p-2 pb-3 rounded-2xl shadow-sm border border-purple-100 relative hover:scale-[1.02] active:scale-95 transition-transform rotate-[-1.5deg]">
+          <div class="washi-tape"></div>
+          <div class="w-full h-36 rounded-xl overflow-hidden bg-purple-50 mb-1.5 mt-1">
+            <img src="07.jpg" alt="07" class="w-full h-full object-cover">
+          </div>
+          <p class="text-[10px] font-bold text-purple-700 truncate">คอลหากันทุกคืน 🌙</p>
+        </div>
+
+        <!-- รูปที่ 8 -->
+        <div onclick="openPhotoModal('08.jpg', 'ไม่ว่าจะมุมไหน ก็น่ารักสำหรับเค้าเสมอ 🤍')" class="cursor-pointer bg-white p-2 pb-3 rounded-2xl shadow-sm border border-purple-100 relative hover:scale-[1.02] active:scale-95 transition-transform rotate-[1.5deg]">
+          <div class="washi-tape"></div>
+          <div class="w-full h-36 rounded-xl overflow-hidden bg-purple-50 mb-1.5 mt-1">
+            <img src="08.jpg" alt="08" class="w-full h-full object-cover">
+          </div>
+          <p class="text-[10px] font-bold text-purple-700 truncate">คนโปรดของใจ 🫶</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 9. Secret Love Letter (จดหมายรักฉบับปิดผนึกครั่ง) -->
+    <div class="w-full bg-gradient-to-b from-white to-purple-50 rounded-[2.5rem] p-5 shadow-xl border-2 border-purple-200 text-center flex flex-col items-center">
+      <div class="inline-block px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-[11px] font-bold mb-2">
+        💌 Special Letter
+      </div>
+      <h3 class="text-sm font-bold text-purple-800">จดหมายถึงเกรปคนเก่ง</h3>
+      <p class="text-[10px] text-purple-400 mb-4">แตะที่ตราประทับครั่งเพื่อเปิดอ่านความในใจ ✨</p>
+
+      <!-- ซองจดหมาย -->
+      <div id="envelope-box" onclick="toggleLetter()" class="w-64 bg-purple-200/60 p-4 rounded-3xl border-2 border-purple-300 relative cursor-pointer active:scale-95 transition-transform shadow-md">
+        <!-- ฝาซองจำลอง -->
+        <div class="w-full h-12 bg-purple-300/80 rounded-2xl flex items-center justify-center relative mb-2 shadow-inner">
+          <!-- ตราประทับขี้ผึ้ง Wax Seal -->
+          <div class="w-11 h-11 rounded-full bg-gradient-to-tr from-amber-500 to-yellow-300 border-2 border-amber-200 shadow-lg flex items-center justify-center text-sm font-bold text-amber-950">
+            DEAR
           </div>
         </div>
-        <div class="bg-purple-50 p-2 rounded-2xl border border-purple-100 shadow-sm">
-          <div class="w-full h-32 rounded-xl overflow-hidden mb-1.5 bg-purple-100">
-            <img src="02.jpg" alt="Gallery 2" class="w-full h-full object-cover">
-          </div>
+        <p class="text-xs font-bold text-purple-700">แตะเพื่อคลี่จดหมายออกอ่าน 📜</p>
+      </div>
+
+      <!-- เนื้อหาจดหมายที่ซ่อนอยู่ -->
+      <div id="letter-content" class="w-full bg-amber-50/80 border-2 border-dashed border-amber-300 rounded-3xl p-5 mt-4 text-left shadow-inner transition-all duration-500 hidden">
+        <p class="text-xs font-bold text-purple-800 mb-2">ถึง เกรปสุดที่รัก 🍇,</p>
+        <p class="text-[11px] text-slate-700 leading-relaxed indent-4">
+          ขอบคุณสำหรับทุกๆ วันที่ผ่านมานะ ขอบคุณที่เข้ามาเป็นความสดใสและเป็นรอยยิ้มให้เค้าเสมอ ถึงบางวันเราจะมีงอนมีทะเลาะกันบ้าง แต่ไม่เคยมีวันไหนเลยที่เค้ารักเกรปน้อยลง
+        </p>
+        <p class="text-[11px] text-slate-700 leading-relaxed indent-4 mt-2">
+          เค้าสัญญาว่าจะคอยอยู่ข้างๆ คอยพาไปกินของอร่อย คอยไปตีแบดด้วย และจะคอยตามใจยัยเกรปแบบนี้ไปเรื่อยๆ ทุกปีเลยนะ อยู่เป็นความสุขของกันและกันตลอดไปนะคนเก่ง 🤍
+        </p>
+        <div class="text-right mt-4 text-xs font-bold text-purple-800">
+          รักเกรปที่สุดในโลก,<br>
+          <span class="text-purple-600 font-normal">เดียร์ 🌷</span>
         </div>
-        <div class="bg-purple-50 p-2 rounded-2xl border border-purple-100 shadow-sm">
-          <div class="w-full h-32 rounded-xl overflow-hidden mb-1.5 bg-purple-100">
-            <img src="03.jpg" alt="Gallery 3" class="w-full h-full object-cover">
-          </div>
-        </div>
-        <!-- ช่องใส่รูปเพิ่ม (เปลี่ยนรูปตรงนี้ได้เลย) -->
-        <div class="bg-purple-50 p-2 rounded-2xl border border-purple-100 shadow-sm flex flex-col items-center justify-center">
-          <div class="w-full h-32 rounded-xl overflow-hidden mb-1.5 bg-purple-100 flex items-center justify-center">
-            <img src="04.jpg" alt="Gallery 2" class="w-full h-full object-cover">
-          </div>
-        <div class="bg-purple-50 p-2 rounded-2xl border border-purple-100 shadow-sm flex flex-col items-center justify-center">
-          <div class="w-full h-32 rounded-xl overflow-hidden mb-1.5 bg-purple-100 flex items-center justify-center">
-            <img src="05.jpg" alt="Gallery 2" class="w-full h-full object-cover">
-          </div> 
-       <div class="bg-purple-50 p-2 rounded-2xl border border-purple-100 shadow-sm flex flex-col items-center justify-center">
-          <div class="w-full h-32 rounded-xl overflow-hidden mb-1.5 bg-purple-100 flex items-center justify-center">
-            <img src="05.jpg" alt="Gallery 2" class="w-full h-full object-cover">
-          </div>
-       <div class="bg-purple-50 p-2 rounded-2xl border border-purple-100 shadow-sm flex flex-col items-center justify-center">
-          <div class="w-full h-32 rounded-xl overflow-hidden mb-1.5 bg-purple-100 flex items-center justify-center">
-            <img src="06.jpg" alt="Gallery 2" class="w-full h-full object-cover">
-          </div>
-       <div class="bg-purple-50 p-2 rounded-2xl border border-purple-100 shadow-sm flex flex-col items-center justify-center">
-          <div class="w-full h-32 rounded-xl overflow-hidden mb-1.5 bg-purple-100 flex items-center justify-center">
-            <img src="07.jpg" alt="Gallery 2" class="w-full h-full object-cover">
-          </div>
-     <div class="bg-purple-50 p-2 rounded-2xl border border-purple-100 shadow-sm flex flex-col items-center justify-center">
-          <div class="w-full h-32 rounded-xl overflow-hidden mb-1.5 bg-purple-100 flex items-center justify-center">
-            <img src="08.jpg" alt="Gallery 2" class="w-full h-full object-cover">
-          </div> 
-       </div>
       </div>
     </div>
 
   </main>
 
-  <!-- 9. Floating Mascot: น้อง "เฉาก๊วย" (มุมจอล่างขวา) -->
+  <!-- 10. Floating Mascot: น้อง "เฉาก๊วย" -->
   <div class="fixed bottom-4 right-4 z-40 flex flex-col items-end">
-    <!-- กล่องคำพูดของน้องเฉาก๊วย -->
     <div id="chaokuay-bubble" class="bg-white/95 border-2 border-purple-300 text-purple-800 text-[11px] font-medium py-1.5 px-3 rounded-2xl rounded-br-none shadow-xl mb-1.5 max-w-[180px] opacity-0 pointer-events-none transition-all duration-300">
       โฮ่ง! แม่เกรปน่ารักที่สุดเลย 🐶
     </div>
-    <!-- ปุ่มตัวน้องเฉาก๊วย -->
     <button onclick="petChaoKuay()" class="w-13 h-13 p-2.5 rounded-full bg-slate-900 border-2 border-purple-300 shadow-2xl active:scale-90 transition-transform flex items-center justify-center">
       <span class="text-2xl animate-pulse">🐶</span>
     </button>
   </div>
 
-  <!-- 10. Photocard Modal (การ์ด SSR ไซน์ทองของ DMD) -->
+  <!-- 11. Lightbox Modal: ขยายรูปภาพ Photo Dump ให้ดูภาพใหญ่ -->
+  <div id="photo-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex flex-col items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300" onclick="closePhotoModal()">
+    <div class="max-w-xs w-full bg-white p-3 rounded-3xl shadow-2xl border-2 border-purple-200 text-center scale-90 transition-transform duration-300" id="photo-modal-box" onclick="event.stopPropagation()">
+      <div class="w-full h-80 rounded-2xl overflow-hidden bg-purple-50 mb-3">
+        <img id="modal-img" src="" alt="Enlarged" class="w-full h-full object-cover">
+      </div>
+      <p id="modal-caption" class="text-xs font-bold text-purple-800 mb-3"></p>
+      <button onclick="closePhotoModal()" class="w-full py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold text-xs rounded-xl active:scale-95 transition">
+        ปิดหน้าต่าง ✨
+      </button>
+    </div>
+  </div>
+
+  <!-- 12. Photocard Modal (SSR) -->
   <div id="photocard-modal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
     <div class="w-full max-w-[290px] holo-card p-4 rounded-3xl shadow-2xl border-4 border-amber-300 text-center relative scale-90 transition-all duration-300" id="photocard-box">
-      
       <div class="flex justify-between items-center text-[10px] font-bold text-purple-900 mb-2">
         <span class="bg-amber-300 px-2 py-0.5 rounded-full">SSR RARE</span>
         <span>DMD SPECIAL EDITION</span>
       </div>
-
-      <!-- กรอบรูปการ์ด -->
       <div class="w-full h-72 rounded-2xl overflow-hidden border-2 border-white/80 shadow-md mb-2 relative bg-white">
         <img src="หอมแก้ม.jpg" alt="SSR Photocard" class="w-full h-full object-cover">
-        <!-- ลายเซ็นทองจำลอง -->
         <div class="absolute bottom-2 right-2 bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-lg border border-amber-300/80">
           <p class="text-[11px] font-bold text-amber-300 italic tracking-wider">✍️ Signed by Dear</p>
         </div>
       </div>
-
       <h4 class="text-sm font-bold text-purple-950 mt-1">เกรป & เดียร์ (ANNIVERSARY VER.)</h4>
       <div class="flex justify-center gap-3 text-[10px] text-purple-900 font-semibold my-1.5">
         <span>ความน่ารัก: MAX ★★★★★</span>
         <span>กินเก่ง: 9999+</span>
       </div>
-      <p class="text-[10px] text-purple-800 italic mb-3">"การ์ดใบแรใบนี้มีใบเดียวในโลก  🤍"</p>
-
+      <p class="text-[10px] text-purple-800 italic mb-3">"การ์ดใบแรใบนี้มีใบเดียวในโลก 🤍"</p>
       <button onclick="closePhotocardModal()" class="w-full py-2.5 bg-gradient-to-r from-purple-700 to-indigo-800 text-white rounded-xl font-bold text-xs shadow-md active:scale-95 transition">
         เก็บเข้าอัลบั้มการ์ด 🎴
       </button>
     </div>
   </div>
 
-  <!-- 11. Capsule Open Pop-up Modal (คูปองความรัก) -->
+  <!-- 13. Capsule Open Pop-up Modal -->
   <div id="reward-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
     <div class="bg-gradient-to-b from-white to-purple-50 p-6 rounded-[2.5rem] border-4 border-purple-300 shadow-2xl max-w-xs w-full text-center relative scale-90 transition-all duration-300" id="reward-box">
       <div class="text-6xl mb-3 animate-bounce">🎁</div>
@@ -491,17 +593,16 @@
   </div>
 
   <script>
-    // --- 1. ข้อมูลการตั้งค่าระบบ ---
     const CORRECT_PIN = "371425"; 
     const START_DATE = new Date("2024-01-01T00:00:00"); 
 
     const COUPONS = [
       "คูปอง: เลี้ยงส้มตำปูปลาร้าเผ็ดน้อย 1 มื้อใหญ่ 🥗",
+      "คูปอง: พาไปกิน HOTPOT MAN ยอมรอคิวไม่อั้น 🍲",
       "คูปอง: พาไปตีแบดมินตัน+เก็บลูกแบดให้ 🏸",
       "คูปอง: ห้ามขัดใจเกรป 1 วันเต็มๆ 👑",
       "คูปอง: ยกเว้นความผิด ง้อสำเร็จทันที 💖",
-      "คูปอง: บริการนวดไหล่/นวดหลัง 30 นาที 💆‍♀️",
-      "คูปอง: พาไปกินของอร่อยตามใจคนกินเก่ง 🍕"
+      "คูปอง: บริการนวดไหล่/นวดหลัง 30 นาที 💆‍♀️"
     ];
 
     const CHAOKUAY_QUOTES = [
@@ -518,7 +619,7 @@
     let knobRotation = 0;
     let bubbleTimeout = null;
 
-    // --- Safe Sound Synthesizer ---
+    // ระบบเสียง Synthesizer
     let audioCtx = null;
     function playBeep(freq = 600, duration = 0.08) {
       try {
@@ -552,7 +653,7 @@
       } catch (e) {}
     }
 
-    // --- Passcode System ---
+    // ระบบ Passcode
     function pressPin(num) {
       if (enteredPin.length < 6) {
         enteredPin += num;
@@ -601,7 +702,7 @@
       }
     }
 
-    // --- Real-time Counter ---
+    // ตัวนับเวลา Real-time
     function updateCounter() {
       const now = new Date();
       const diff = now - START_DATE;
@@ -619,7 +720,7 @@
     setInterval(updateCounter, 1000);
     updateCounter();
 
-    // --- Slider & Touch Gestures ---
+    // Slider
     function showSlide(index) {
       const slides = document.querySelectorAll('.photo-slide');
       const dots = document.querySelectorAll('#slide-indicators span');
@@ -668,6 +769,7 @@
       card.classList.toggle('rotate-y-180');
     }
 
+    // Gestures
     let touchStartX = 0;
     let touchEndX = 0;
     const carouselArea = document.getElementById('carousel-area');
@@ -682,7 +784,7 @@
       if (touchEndX > touchStartX + 40) prevSlide();
     }, { passive: true });
 
-    // --- Photocard Opening Game (ฉีกซองการ์ด DMD) ---
+    // ฉีกซองการ์ด DMD
     function openPhotocardPack() {
       playSuccessChime();
       confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
@@ -702,7 +804,7 @@
       box.classList.add('scale-90');
     }
 
-    // --- Gachapon Machine ---
+    // หมุนตู้ไข่
     function spinGachapon() {
       if (isSpinning) return;
       isSpinning = true;
@@ -752,7 +854,7 @@
       box.classList.add('scale-90');
     }
 
-    // --- Mascot: น้องเฉาก๊วย ---
+    // Mascot เฉาก๊วย
     function petChaoKuay() {
       playBeep(700, 0.08);
       const bubble = document.getElementById('chaokuay-bubble');
@@ -766,7 +868,40 @@
       }, 3500);
     }
 
-    // --- Touch Sparkles (องุ่น, ดาว, หัวใจม่วง) ---
+    // เปิด-ปิดจดหมายรัก
+    function toggleLetter() {
+      playBeep(550, 0.06);
+      const letter = document.getElementById('letter-content');
+      if (letter.classList.contains('hidden')) {
+        letter.classList.remove('hidden');
+        confetti({ particleCount: 60, spread: 50, origin: { y: 0.8 } });
+      } else {
+        letter.classList.add('hidden');
+      }
+    }
+
+    // ระบบขยายภาพ Lightbox
+    function openPhotoModal(imgSrc, caption) {
+      playBeep(600, 0.05);
+      const modal = document.getElementById('photo-modal');
+      const box = document.getElementById('photo-modal-box');
+      document.getElementById('modal-img').src = imgSrc;
+      document.getElementById('modal-caption').innerText = caption;
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      box.classList.remove('scale-90');
+      box.classList.add('scale-100');
+    }
+
+    function closePhotoModal() {
+      playBeep(400, 0.05);
+      const modal = document.getElementById('photo-modal');
+      const box = document.getElementById('photo-modal-box');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      box.classList.remove('scale-100');
+      box.classList.add('scale-90');
+    }
+
+    // Touch Sparkles
     const ICONS = ['🍇', '✨', '💜', '⭐', '🤍', '🐶'];
     document.addEventListener('pointerdown', (e) => {
       if (e.target.closest('#pin-dots') || e.target.closest('button')) return;
@@ -781,6 +916,26 @@
 
       setTimeout(() => sparkle.remove(), 900);
     });
+
+    // สร้างละอองลอยฉากหลังอัตโนมัติ
+    function createFallingParticles() {
+      const container = document.getElementById('particles-container');
+      const symbols = ['🌸', '✨', '💜', '🍇', '🤍'];
+      
+      setInterval(() => {
+        if (document.hidden) return;
+        const particle = document.createElement('div');
+        particle.className = 'bg-float-item';
+        particle.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+        particle.style.left = `${Math.random() * 100}vw`;
+        particle.style.fontSize = `${Math.random() * 10 + 12}px`;
+        particle.style.animationDuration = `${Math.random() * 5 + 6}s`;
+        container.appendChild(particle);
+
+        setTimeout(() => particle.remove(), 11000);
+      }, 900);
+    }
+    createFallingParticles();
   </script>
 </body>
 </html>
