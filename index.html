@@ -2,113 +2,145 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Happy Anniversary ค้าบคุณแฟนสุดที่รัก 💖</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts: Mali -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&display=swap" rel="stylesheet">
   <!-- Confetti Library -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
-    body { font-family: 'Mali', cursive; }
+    body { 
+      font-family: 'Mali', cursive; 
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
     .perspective { perspective: 1000px; }
     .preserve-3d { transform-style: preserve-3d; }
     .backface-hidden { backface-visibility: hidden; }
     .rotate-y-180 { transform: rotateY(180deg); }
+
+    /* Floating Heart Tap Effect */
+    .tap-heart {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      animation: floatUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    @keyframes floatUp {
+      0% { opacity: 1; transform: translate(-50%, -50%) scale(0.6) rotate(0deg); }
+      50% { transform: translate(-50%, -100px) scale(1.2) rotate(15deg); }
+      100% { opacity: 0; transform: translate(-50%, -160px) scale(0.9) rotate(-15deg); }
+    }
+
+    /* Gachapon Capsule Jiggle */
+    @keyframes gachaJiggle {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(-8px, -12px) rotate(-15deg); }
+      50% { transform: translate(6px, -18px) rotate(10deg); }
+      75% { transform: translate(-6px, -8px) rotate(-10deg); }
+    }
+    .shake-capsules .capsule {
+      animation: gachaJiggle 0.4s ease-in-out infinite alternate;
+    }
   </style>
 </head>
-<body class="bg-gradient-to-b from-pink-100 via-rose-50 to-purple-100 min-h-screen text-slate-700 flex flex-col items-center p-4 selection:bg-pink-200">
+<body class="bg-gradient-to-b from-pink-100 via-rose-50 to-purple-100 min-h-screen text-slate-700 flex flex-col items-center p-3 sm:p-4 overflow-x-hidden selection:bg-pink-200">
 
   <!-- 1. Passcode Lock Screen (6 หลัก) -->
-  <section id="lock-screen" class="fixed inset-0 z-50 bg-rose-50/95 backdrop-blur-md flex flex-col items-center justify-center p-6 transition-all duration-500">
-    <div class="bg-white/90 p-8 rounded-3xl shadow-xl border-4 border-pink-200 max-w-xs w-full text-center">
+  <section id="lock-screen" class="fixed inset-0 z-50 bg-rose-50/95 backdrop-blur-md flex flex-col items-center justify-center p-4 transition-all duration-500">
+    <div class="bg-white/95 p-6 sm:p-8 rounded-[2.5rem] shadow-2xl border-4 border-pink-200 w-full max-w-[320px] text-center relative overflow-hidden">
       <div class="text-4xl mb-2 animate-bounce">🔐</div>
       <h2 class="text-xl font-bold text-rose-500 mb-1">รหัสลับวันเวลา</h2>
-      <p class="text-xs text-rose-400 mb-6">กดรหัสคู่รัก 6 หลักเพื่อเปิดกล่องความทรงจำ ✨</p>
+      <p class="text-xs text-rose-400 mb-6">กดรหัสคู่รัก 6 หลักเพื่อเปิดความทรงจำ ✨</p>
       
       <!-- Dots 6 ช่อง -->
-      <div id="pin-dots" class="flex justify-center gap-2.5 mb-8">
-        <span class="w-3.5 h-3.5 rounded-full border-2 border-rose-300 bg-white transition-all"></span>
-        <span class="w-3.5 h-3.5 rounded-full border-2 border-rose-300 bg-white transition-all"></span>
-        <span class="w-3.5 h-3.5 rounded-full border-2 border-rose-300 bg-white transition-all"></span>
-        <span class="w-3.5 h-3.5 rounded-full border-2 border-rose-300 bg-white transition-all"></span>
-        <span class="w-3.5 h-3.5 rounded-full border-2 border-rose-300 bg-white transition-all"></span>
-        <span class="w-3.5 h-3.5 rounded-full border-2 border-rose-300 bg-white transition-all"></span>
+      <div id="pin-dots" class="flex justify-center gap-2 mb-7">
+        <span class="w-3 h-3 rounded-full border-2 border-rose-300 bg-white transition-all duration-200"></span>
+        <span class="w-3 h-3 rounded-full border-2 border-rose-300 bg-white transition-all duration-200"></span>
+        <span class="w-3 h-3 rounded-full border-2 border-rose-300 bg-white transition-all duration-200"></span>
+        <span class="w-3 h-3 rounded-full border-2 border-rose-300 bg-white transition-all duration-200"></span>
+        <span class="w-3 h-3 rounded-full border-2 border-rose-300 bg-white transition-all duration-200"></span>
+        <span class="w-3 h-3 rounded-full border-2 border-rose-300 bg-white transition-all duration-200"></span>
       </div>
 
       <!-- Keypad -->
-      <div class="grid grid-cols-3 gap-3">
-        <button onclick="pressPin('1')" class="h-13 py-3 rounded-2xl bg-pink-50 hover:bg-pink-100 text-rose-600 font-bold text-lg active:scale-95 transition">1</button>
-        <button onclick="pressPin('2')" class="h-13 py-3 rounded-2xl bg-pink-50 hover:bg-pink-100 text-rose-600 font-bold text-lg active:scale-95 transition">2</button>
-        <button onclick="pressPin('3')" class="h-13 py-3 rounded-2xl bg-pink-50 hover:bg-pink-100 text-rose-600 font-bold text-lg active:scale-95 transition">3</button>
-        <button onclick="pressPin('4')" class="h-13 py-3 rounded-2xl bg-pink-50 hover:bg-pink-100 text-rose-600 font-bold text-lg active:scale-95 transition">4</button>
-        <button onclick="pressPin('5')" class="h-13 py-3 rounded-2xl bg-pink-50 hover:bg-pink-100 text-rose-600 font-bold text-lg active:scale-95 transition">5</button>
-        <button onclick="pressPin('6')" class="h-13 py-3 rounded-2xl bg-pink-50 hover:bg-pink-100 text-rose-600 font-bold text-lg active:scale-95 transition">6</button>
-        <button onclick="pressPin('7')" class="h-13 py-3 rounded-2xl bg-pink-50 hover:bg-pink-100 text-rose-600 font-bold text-lg active:scale-95 transition">7</button>
-        <button onclick="pressPin('8')" class="h-13 py-3 rounded-2xl bg-pink-50 hover:bg-pink-100 text-rose-600 font-bold text-lg active:scale-95 transition">8</button>
-        <button onclick="pressPin('9')" class="h-13 py-3 rounded-2xl bg-pink-50 hover:bg-pink-100 text-rose-600 font-bold text-lg active:scale-95 transition">9</button>
-        <button onclick="clearPin()" class="h-13 py-3 rounded-2xl bg-slate-50 text-slate-400 font-medium text-xs active:scale-95 transition">ลบ</button>
-        <button onclick="pressPin('0')" class="h-13 py-3 rounded-2xl bg-pink-50 hover:bg-pink-100 text-rose-600 font-bold text-lg active:scale-95 transition">0</button>
-        <button onclick="checkPin()" class="h-13 py-3 rounded-2xl bg-rose-400 hover:bg-rose-500 text-white font-bold active:scale-95 transition">💖</button>
+      <div class="grid grid-cols-3 gap-2.5">
+        <button onclick="pressPin('1')" class="h-12 rounded-2xl bg-pink-50/80 active:bg-pink-200 text-rose-600 font-bold text-base active:scale-90 transition shadow-sm">1</button>
+        <button onclick="pressPin('2')" class="h-12 rounded-2xl bg-pink-50/80 active:bg-pink-200 text-rose-600 font-bold text-base active:scale-90 transition shadow-sm">2</button>
+        <button onclick="pressPin('3')" class="h-12 rounded-2xl bg-pink-50/80 active:bg-pink-200 text-rose-600 font-bold text-base active:scale-90 transition shadow-sm">3</button>
+        <button onclick="pressPin('4')" class="h-12 rounded-2xl bg-pink-50/80 active:bg-pink-200 text-rose-600 font-bold text-base active:scale-90 transition shadow-sm">4</button>
+        <button onclick="pressPin('5')" class="h-12 rounded-2xl bg-pink-50/80 active:bg-pink-200 text-rose-600 font-bold text-base active:scale-90 transition shadow-sm">5</button>
+        <button onclick="pressPin('6')" class="h-12 rounded-2xl bg-pink-50/80 active:bg-pink-200 text-rose-600 font-bold text-base active:scale-90 transition shadow-sm">6</button>
+        <button onclick="pressPin('7')" class="h-12 rounded-2xl bg-pink-50/80 active:bg-pink-200 text-rose-600 font-bold text-base active:scale-90 transition shadow-sm">7</button>
+        <button onclick="pressPin('8')" class="h-12 rounded-2xl bg-pink-50/80 active:bg-pink-200 text-rose-600 font-bold text-base active:scale-90 transition shadow-sm">8</button>
+        <button onclick="pressPin('9')" class="h-12 rounded-2xl bg-pink-50/80 active:bg-pink-200 text-rose-600 font-bold text-base active:scale-90 transition shadow-sm">9</button>
+        <button onclick="clearPin()" class="h-12 rounded-2xl bg-slate-100 active:bg-slate-200 text-slate-400 font-semibold text-xs active:scale-90 transition">ลบ</button>
+        <button onclick="pressPin('0')" class="h-12 rounded-2xl bg-pink-50/80 active:bg-pink-200 text-rose-600 font-bold text-base active:scale-90 transition shadow-sm">0</button>
+        <button onclick="checkPin()" class="h-12 rounded-2xl bg-rose-400 hover:bg-rose-500 text-white font-bold text-lg active:scale-90 transition shadow-md shadow-rose-200">💖</button>
       </div>
-      <p id="error-msg" class="text-xs text-rose-500 mt-4 opacity-0 transition-opacity font-medium">รหัสยังไม่ใช่น้าาที่รัก ลองนึกดูดีๆ แต่รหัสยากมากก 🥺</p>
+      <p id="error-msg" class="text-xs text-rose-500 mt-4 opacity-0 transition-opacity font-medium">รหัสยังไม่ใช่น้าาที่รัก ลองนึกดูดีๆ 🥺</p>
     </div>
   </section>
 
-  <!-- 2. Main Anniversary Content -->
-  <main class="max-w-md w-full py-6 flex flex-col items-center gap-6 pb-12">
+  <!-- 2. Main Anniversary Content Container (Fixed Width for All Mobile Screens) -->
+  <main class="w-full max-w-[360px] sm:max-w-sm flex flex-col items-center gap-5 pt-3 pb-16">
 
-    <!-- Header -->
-    <header class="text-center w-full">
-      <div class="inline-block px-4 py-1.5 bg-rose-200/60 text-rose-600 rounded-full text-xs font-semibold mb-2 shadow-sm">
-        🌸 Our Special Day
+    <!-- Header Section -->
+    <header class="text-center w-full px-2">
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-white/70 backdrop-blur border border-pink-200 text-rose-500 rounded-full text-[11px] font-semibold mb-2 shadow-sm">
+        <span class="animate-pulse">🌸</span> Our Sweet Anniversary
       </div>
-      <h1 class="text-2xl font-bold text-rose-600">Happy Anniversary</h1>
-      <p class="text-xs text-rose-400 mt-0.5">ขอบคุณที่เข้ามาเป็นรอยยิ้มให้กันเสมอมานะ ทะเลาะกันบ้างแต่เค้าก็รักเธอเสมอนะ 🌷</p>
+      <h1 class="text-2xl sm:text-3xl font-bold text-rose-600 tracking-tight">Happy Anniversary</h1>
+      <p class="text-xs text-rose-400 mt-1 leading-relaxed">
+        ขอบคุณที่เข้ามาเป็นรอยยิ้มให้กันเสมอมานะ<br>ทะเลาะกันบ้างแต่เค้าก็รักเธอที่สุดเลย 🌷
+      </p>
     </header>
 
     <!-- Real-Time Counter Card -->
-    <div class="bg-white/90 w-full p-5 rounded-3xl shadow-lg border border-pink-100 text-center relative overflow-hidden">
-      <span class="text-3xl absolute -right-2 -bottom-2 opacity-20">🎀</span>
-      <p class="text-xs text-rose-400 font-medium mb-3">ช่วงเวลาแห่งความสุขที่อยู่ด้วยกัน</p>
+    <div class="bg-white/90 backdrop-blur-md w-full p-4 sm:p-5 rounded-3xl shadow-lg border border-pink-100 text-center relative overflow-hidden">
+      <span class="text-3xl absolute -right-1 -bottom-1 opacity-20 pointer-events-none">🎀</span>
+      <p class="text-xs text-rose-400 font-medium mb-3 flex items-center justify-center gap-1.5">
+        <span>⏱️</span> ช่วงเวลาแห่งความสุขที่อยู่ด้วยกัน
+      </p>
       <div class="grid grid-cols-4 gap-2">
-        <div class="bg-rose-50 p-2.5 rounded-2xl">
-          <span id="days" class="text-xl font-bold text-rose-500 block">0</span>
+        <div class="bg-gradient-to-b from-rose-50 to-pink-50/70 p-2 rounded-2xl border border-pink-100/60 shadow-sm">
+          <span id="days" class="text-lg sm:text-xl font-bold text-rose-500 block leading-tight">0</span>
           <span class="text-[10px] text-rose-400">วัน</span>
         </div>
-        <div class="bg-rose-50 p-2.5 rounded-2xl">
-          <span id="hours" class="text-xl font-bold text-rose-500 block">0</span>
+        <div class="bg-gradient-to-b from-rose-50 to-pink-50/70 p-2 rounded-2xl border border-pink-100/60 shadow-sm">
+          <span id="hours" class="text-lg sm:text-xl font-bold text-rose-500 block leading-tight">0</span>
           <span class="text-[10px] text-rose-400">ชั่วโมง</span>
         </div>
-        <div class="bg-rose-50 p-2.5 rounded-2xl">
-          <span id="minutes" class="text-xl font-bold text-rose-500 block">0</span>
+        <div class="bg-gradient-to-b from-rose-50 to-pink-50/70 p-2 rounded-2xl border border-pink-100/60 shadow-sm">
+          <span id="minutes" class="text-lg sm:text-xl font-bold text-rose-500 block leading-tight">0</span>
           <span class="text-[10px] text-rose-400">นาที</span>
         </div>
-        <div class="bg-rose-50 p-2.5 rounded-2xl">
-          <span id="seconds" class="text-xl font-bold text-rose-500 block">0</span>
+        <div class="bg-gradient-to-b from-rose-50 to-pink-50/70 p-2 rounded-2xl border border-pink-100/60 shadow-sm">
+          <span id="seconds" class="text-lg sm:text-xl font-bold text-rose-500 block leading-tight">0</span>
           <span class="text-[10px] text-rose-400">วินาที</span>
         </div>
       </div>
     </div>
 
-    <!-- 3. Polaroid Slider Section (ใส่รูปทั้ง 3 รูป) -->
+    <!-- 3. Polaroid Slider Section (รองรับ Touch Swipe ปัดซ้าย-ขวาบนมือถือ) -->
     <div class="w-full flex flex-col items-center">
       <div class="flex items-center justify-between w-full px-2 mb-2">
-        <span class="text-xs font-bold text-rose-500">📸 Our Sweet Memories</span>
-        <span class="text-[11px] text-rose-400">แตะที่รูปเพื่ออ่านการ์ดลับ 💌</span>
+        <span class="text-xs font-bold text-rose-500 flex items-center gap-1">📸 Our Sweet Memories</span>
+        <span class="text-[10px] text-rose-400 bg-rose-50 px-2 py-0.5 rounded-full border border-pink-200">แตะรูปเพื่อพลิกอ่าน 💌</span>
       </div>
 
-      <!-- Carousel Container -->
-      <div class="relative w-72 h-96 perspective" id="carousel-area">
+      <!-- Carousel Frame with Touch Event -->
+      <div class="relative w-full max-w-[280px] h-[370px] perspective touch-pan-y" id="carousel-area">
         
         <!-- Slide 1 -->
         <div class="photo-slide absolute inset-0 transition-all duration-500 cursor-pointer" onclick="flipCard(this)">
           <div class="card-inner relative w-full h-full preserve-3d duration-500 rounded-3xl shadow-xl">
-            <div class="absolute inset-0 bg-white p-3.5 rounded-3xl flex flex-col items-center backface-hidden border border-pink-100">
-              <div class="w-full h-72 bg-pink-50 rounded-2xl overflow-hidden mb-3">
+            <div class="absolute inset-0 bg-white p-3 rounded-3xl flex flex-col items-center backface-hidden border-2 border-pink-100 shadow-md">
+              <div class="w-full h-[270px] bg-pink-50 rounded-2xl overflow-hidden mb-2.5">
                 <img src="กอดเท่.jpg" alt="Memory 1" class="w-full h-full object-cover">
               </div>
               <p class="text-xs font-bold text-rose-500">ยืนเคียงข้างกันในทุกๆ วัน 🫶</p>
@@ -128,8 +160,8 @@
         <!-- Slide 2 -->
         <div class="photo-slide absolute inset-0 transition-all duration-500 opacity-0 pointer-events-none cursor-pointer" onclick="flipCard(this)">
           <div class="card-inner relative w-full h-full preserve-3d duration-500 rounded-3xl shadow-xl">
-            <div class="absolute inset-0 bg-white p-3.5 rounded-3xl flex flex-col items-center backface-hidden border border-pink-100">
-              <div class="w-full h-72 bg-pink-50 rounded-2xl overflow-hidden mb-3">
+            <div class="absolute inset-0 bg-white p-3 rounded-3xl flex flex-col items-center backface-hidden border-2 border-pink-100 shadow-md">
+              <div class="w-full h-[270px] bg-pink-50 rounded-2xl overflow-hidden mb-2.5">
                 <img src="จุ่มแก้ม.jpg" alt="Memory 2" class="w-full h-full object-cover">
               </div>
               <p class="text-xs font-bold text-rose-500">จุ่มแก้มใบแรของเค้า 😘</p>
@@ -149,8 +181,8 @@
         <!-- Slide 3 -->
         <div class="photo-slide absolute inset-0 transition-all duration-500 opacity-0 pointer-events-none cursor-pointer" onclick="flipCard(this)">
           <div class="card-inner relative w-full h-full preserve-3d duration-500 rounded-3xl shadow-xl">
-            <div class="absolute inset-0 bg-white p-3.5 rounded-3xl flex flex-col items-center backface-hidden border border-pink-100">
-              <div class="w-full h-72 bg-pink-50 rounded-2xl overflow-hidden mb-3">
+            <div class="absolute inset-0 bg-white p-3 rounded-3xl flex flex-col items-center backface-hidden border-2 border-pink-100 shadow-md">
+              <div class="w-full h-[270px] bg-pink-50 rounded-2xl overflow-hidden mb-2.5">
                 <img src="หอมแก้ม.jpg" alt="Memory 3" class="w-full h-full object-cover">
               </div>
               <p class="text-xs font-bold text-rose-500">เติมพลังให้กันทุกวัน 💖</p>
@@ -170,169 +202,127 @@
       </div>
 
       <!-- Controls & Dots -->
-      <div class="flex items-center gap-4 mt-4">
-        <button onclick="prevSlide()" class="w-9 h-9 rounded-full bg-white shadow-md text-rose-500 font-bold flex items-center justify-center hover:bg-rose-50 active:scale-95 transition">‹</button>
+      <div class="flex items-center gap-4 mt-3">
+        <button onclick="prevSlide()" class="w-8 h-8 rounded-full bg-white shadow-sm border border-pink-100 text-rose-500 font-bold flex items-center justify-center active:scale-90 transition">‹</button>
         <div class="flex gap-2" id="slide-indicators">
           <span class="w-2.5 h-2.5 rounded-full bg-rose-500 transition-all"></span>
           <span class="w-2.5 h-2.5 rounded-full bg-rose-200 transition-all"></span>
           <span class="w-2.5 h-2.5 rounded-full bg-rose-200 transition-all"></span>
         </div>
-        <button onclick="nextSlide()" class="w-9 h-9 rounded-full bg-white shadow-md text-rose-500 font-bold flex items-center justify-center hover:bg-rose-50 active:scale-95 transition">›</button>
+        <button onclick="nextSlide()" class="w-8 h-8 rounded-full bg-white shadow-md border border-pink-100 text-rose-500 font-bold flex items-center justify-center active:scale-90 transition">›</button>
       </div>
     </div>
 
-    <!-- 4. Gachapon Coupon Section -->
-    <div class="bg-white/90 w-full p-6 rounded-3xl shadow-lg border border-pink-100 text-center">
-      <div class="text-2xl mb-1">🎁</div>
-      <h3 class="font-bold text-rose-600 text-sm">ตู้สุ่มคูปองตามใจแฟน</h3>
-      <p class="text-[11px] text-rose-400 mb-4">สุ่มรับสิทธิ์พิเศษสำหรับแฟนคนเก่งวันนี้</p>
+    <!-- 4. Mini-Game: Gachapon Machine (ตู้หมุนไข่กาชาปองความรัก) -->
+    <div class="w-full bg-white/90 backdrop-blur-md rounded-[2.5rem] p-5 shadow-xl border border-pink-200 flex flex-col items-center relative">
+      <div class="inline-block px-3 py-1 bg-pink-100 text-rose-600 rounded-full text-[11px] font-bold mb-2">
+        🎰 ตู้หมุนไข่ความรักตามใจแฟน
+      </div>
+      <p class="text-[11px] text-rose-400 text-center mb-3">หมุนคันโยกเพื่อลุ้นรับคูปองรางวัลวันนี้ ✨</p>
 
-      <div id="coupon-display" class="bg-pink-50/70 border-2 border-dashed border-pink-300 rounded-2xl p-4 mb-4 min-h-[70px] flex items-center justify-center">
-        <span class="text-xs text-rose-400 font-medium">กดปุ่มด้านล่างเพื่อลุ้นรางวัล 🪄</span>
+      <!-- Glass Dome & Capsules -->
+      <div class="relative w-48 h-40 bg-gradient-to-b from-pink-50/70 to-rose-100/80 rounded-t-full border-4 border-b-0 border-pink-300 shadow-inner overflow-hidden flex items-end justify-center pb-2" id="gacha-dome">
+        <!-- Dome Reflection -->
+        <div class="absolute top-2 left-6 w-8 h-12 bg-white/40 rounded-full blur-[1px] rotate-[-20deg]"></div>
+
+        <!-- Capsules Inside Dome -->
+        <div class="relative w-36 h-28 flex flex-wrap justify-center items-end gap-2" id="capsule-container">
+          <div class="capsule w-8 h-8 rounded-full bg-gradient-to-tr from-rose-400 to-pink-200 shadow-md border border-white flex items-center justify-center text-xs">💖</div>
+          <div class="capsule w-8 h-8 rounded-full bg-gradient-to-tr from-amber-300 to-yellow-100 shadow-md border border-white flex items-center justify-center text-xs">⭐</div>
+          <div class="capsule w-8 h-8 rounded-full bg-gradient-to-tr from-purple-400 to-indigo-200 shadow-md border border-white flex items-center justify-center text-xs">🎀</div>
+          <div class="capsule w-8 h-8 rounded-full bg-gradient-to-tr from-emerald-400 to-teal-200 shadow-md border border-white flex items-center justify-center text-xs">🍀</div>
+          <div class="capsule w-8 h-8 rounded-full bg-gradient-to-tr from-sky-400 to-blue-200 shadow-md border border-white flex items-center justify-center text-xs">💌</div>
+        </div>
       </div>
 
-      <button onclick="drawCoupon()" class="w-full py-3 bg-gradient-to-r from-rose-400 to-pink-400 hover:from-rose-500 hover:to-pink-500 text-white rounded-2xl font-bold text-xs shadow-md shadow-pink-200 active:scale-95 transition">
-        กดสุ่มคูปอง 🎲
-      </button>
+      <!-- Machine Base & Rotary Knob -->
+      <div class="w-56 bg-gradient-to-b from-rose-400 to-pink-500 rounded-3xl p-4 shadow-lg border-2 border-rose-300 flex flex-col items-center relative -mt-1">
+        
+        <!-- Rotary Turn Knob -->
+        <div class="relative flex flex-col items-center my-1">
+          <button id="gacha-knob" onclick="spinGachapon()" class="w-14 h-14 rounded-full bg-white shadow-md border-4 border-rose-200 flex items-center justify-center active:scale-95 transition-transform duration-700 ease-out">
+            <div class="w-10 h-3 bg-rose-400 rounded-full shadow-inner flex items-center justify-between px-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+            </div>
+          </button>
+          <span class="text-[10px] text-white font-bold mt-1.5 drop-shadow">แตะเพื่อหมุน 🪙</span>
+        </div>
+
+        <!-- Prize Exit Slot -->
+        <div class="w-24 h-7 bg-rose-900/40 rounded-full border-2 border-rose-300/80 mt-2 flex items-center justify-center overflow-hidden relative">
+          <span id="prize-ready-glow" class="text-[10px] text-pink-200 font-medium">รอไข่ตก...</span>
+        </div>
+      </div>
+
     </div>
 
   </main>
 
+  <!-- 5. Capsule Open Pop-up Modal -->
+  <div id="reward-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+    <div class="bg-gradient-to-b from-white to-rose-50 p-6 rounded-[2.5rem] border-4 border-pink-300 shadow-2xl max-w-xs w-full text-center relative scale-90 transition-all duration-300" id="reward-box">
+      
+      <!-- Animated Hatching Egg -->
+      <div class="text-6xl mb-3 animate-bounce">🎁</div>
+      <div class="inline-block px-3 py-1 bg-rose-100 text-rose-500 rounded-full text-[10px] font-bold mb-2">
+        ยินดีด้วยน้าาา 🎉
+      </div>
+      <h3 class="text-lg font-bold text-rose-600 mb-3">ได้รับคูปองความรัก!</h3>
+
+      <!-- Voucher Ticket -->
+      <div class="bg-white border-2 border-dashed border-rose-300 rounded-2xl p-4 shadow-sm mb-5 relative">
+        <span class="absolute -left-3 top-1/2 -translate-y-1/2 w-5 h-5 bg-rose-50 rounded-full border-r-2 border-rose-300"></span>
+        <span class="absolute -right-3 top-1/2 -translate-y-1/2 w-5 h-5 bg-rose-50 rounded-full border-l-2 border-rose-300"></span>
+        <p id="reward-text" class="text-sm font-bold text-rose-500 leading-relaxed">
+          คูปองพิเศษ
+        </p>
+        <span class="text-[10px] text-rose-300 block mt-1 font-normal">*ใช้สิทธิ์กับแฟนได้ทันที ไม่มีหมดอายุ 💖</span>
+      </div>
+
+      <button onclick="closeRewardModal()" class="w-full py-3 bg-gradient-to-r from-rose-400 to-pink-500 text-white rounded-2xl font-bold text-xs shadow-md shadow-pink-200 active:scale-95 transition">
+        เก็บใส่กระเป๋า 🫶
+      </button>
+    </div>
+  </div>
+
   <script>
-    // --- การตั้งค่าข้อมูล ---
-    const CORRECT_PIN = "371425"; // รหัสผ่าน 6 หลัก
-    const START_DATE = new Date("2024-01-01T00:00:00"); // ปรับวันที่เริ่มต้นคบกันตามจริง
+    // --- 1. ข้อมูลการตั้งค่าระบบ ---
+    const CORRECT_PIN = "371425"; 
+    const START_DATE = new Date("2024-01-01T00:00:00"); 
 
     const COUPONS = [
       "คูปอง: พาไปกินของอร่อยตามใจ 1 มื้อ 🍕",
       "คูปอง: บริการนวดไหล่/นวดหลัง 30 นาที 💆‍♀️",
       "คูปอง: ห้ามขัดใจแฟน 1 วันเต็มๆ 👑",
-      "คูปอง: ห้ามงอล ",
-      "คูปอง: ง้อสำเร็จทันทีไม่มีเงื่อนไข 💖"
+      "คูปอง: ยกเว้นความผิด ง้อสำเร็จทันที 💖",
+      "คูปอง: ตามใจทุกอย่างภายใน 24 ชม. 🪄",
+      "คูปอง: พาไปคาเฟ่ถ่ายรูปสวยๆ ☕"
     ];
 
     let enteredPin = "";
     let currentSlide = 0;
+    let isSpinning = false;
+    let knobRotation = 0;
 
-    // ระบบ Passcode 6 หลัก
-    function pressPin(num) {
-      if (enteredPin.length < 6) {
-        enteredPin += num;
-        updateDots();
-        if (enteredPin.length === 6) {
-          checkPin();
-        }
-      }
+    // --- Web Audio Synthesizer (เสียงเอฟเฟกต์น่ารัก ไม่ต้องใช้ไฟล์ภายนอก) ---
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    function playBeep(freq = 600, duration = 0.08) {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.frequency.value = freq;
+      osc.type = 'sine';
+      gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration);
     }
 
-    function clearPin() {
-      enteredPin = "";
-      updateDots();
-      document.getElementById('error-msg').classList.add('opacity-0');
-    }
-
-    function updateDots() {
-      const dots = document.querySelectorAll('#pin-dots span');
-      dots.forEach((dot, index) => {
-        if (index < enteredPin.length) {
-          dot.classList.add('bg-rose-400', 'border-rose-400');
-          dot.classList.remove('bg-white');
-        } else {
-          dot.classList.remove('bg-rose-400', 'border-rose-400');
-          dot.classList.add('bg-white');
-        }
-      });
-    }
-
-    function checkPin() {
-      if (enteredPin === CORRECT_PIN) {
-        confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
-        const lock = document.getElementById('lock-screen');
-        lock.classList.add('opacity-0', 'pointer-events-none');
-        setTimeout(() => lock.style.display = 'none', 500);
-      } else {
-        const error = document.getElementById('error-msg');
-        error.classList.remove('opacity-0');
-        clearPin();
-      }
-    }
-
-    // ตัวนับเวลาแบบ Real-time
-    function updateCounter() {
-      const now = new Date();
-      const diff = now - START_DATE;
-
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((diff / (1000 * 60)) % 60);
-      const seconds = Math.floor((diff / 1000) % 60);
-
-      document.getElementById('days').innerText = days;
-      document.getElementById('hours').innerText = hours;
-      document.getElementById('minutes').innerText = minutes;
-      document.getElementById('seconds').innerText = seconds;
-    }
-    setInterval(updateCounter, 1000);
-    updateCounter();
-
-    // ควบคุม Slider รูปถ่าย
-    function showSlide(index) {
-      const slides = document.querySelectorAll('.photo-slide');
-      const dots = document.querySelectorAll('#slide-indicators span');
-
-      slides.forEach((slide, i) => {
-        const inner = slide.querySelector('.card-inner');
-        if (inner) inner.classList.remove('rotate-y-180'); // รีเซ็ตการพลิกการ์ดกลับด้านหน้า
-
-        if (i === index) {
-          slide.classList.remove('opacity-0', 'pointer-events-none');
-          slide.classList.add('opacity-100');
-        } else {
-          slide.classList.add('opacity-0', 'pointer-events-none');
-          slide.classList.remove('opacity-100');
-        }
-      });
-
-      dots.forEach((dot, i) => {
-        if (i === index) {
-          dot.classList.remove('bg-rose-200');
-          dot.classList.add('bg-rose-500');
-        } else {
-          dot.classList.remove('bg-rose-500');
-          dot.classList.add('bg-rose-200');
-        }
-      });
-    }
-
-    function nextSlide() {
-      const slides = document.querySelectorAll('.photo-slide');
-      currentSlide = (currentSlide + 1) % slides.length;
-      showSlide(currentSlide);
-    }
-
-    function prevSlide() {
-      const slides = document.querySelectorAll('.photo-slide');
-      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-      showSlide(currentSlide);
-    }
-
-    // พลิกการ์ดหน้า-หลัง
-    function flipCard(cardWrapper) {
-      const card = cardWrapper.querySelector('.card-inner');
-      card.classList.toggle('rotate-y-180');
-    }
-
-    // ระบบสุ่มคูปอง
-    function drawCoupon() {
-      const display = document.getElementById('coupon-display');
-      display.innerHTML = `<span class="text-xs text-rose-400 animate-pulse">กำลังเขย่ากล่องสุ่ม... 🎁</span>`;
-      
-      setTimeout(() => {
-        const randomIndex = Math.floor(Math.random() * COUPONS.length);
-        display.innerHTML = `<span class="text-xs font-bold text-rose-600 animate-bounce">${COUPONS[randomIndex]}</span>`;
-        confetti({ particleCount: 50, spread: 60, origin: { y: 0.85 } });
-      }, 500);
-    }
-  </script>
-</body>
-</html>
+    function playSuccessChime() {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+        setTimeout(() => playBe
