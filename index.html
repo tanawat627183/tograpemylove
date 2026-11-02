@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Happy Anniversary ค้าบคุณแฟนสุดที่รัก 💖</title>
+  <title>Happy Anniversary to GRAPE 🍇💖</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts: Mali -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&display=swap" rel="stylesheet">
   <!-- Confetti Library -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -23,7 +23,8 @@
     .backface-hidden { backface-visibility: hidden; }
     .rotate-y-180 { transform: rotateY(180deg); }
 
-    .tap-heart {
+    /* Touch Sparkles */
+    .tap-sparkle {
       position: fixed;
       pointer-events: none;
       z-index: 9999;
@@ -31,10 +32,11 @@
     }
     @keyframes floatUp {
       0% { opacity: 1; transform: translate(-50%, -50%) scale(0.6) rotate(0deg); }
-      50% { transform: translate(-50%, -100px) scale(1.2) rotate(15deg); }
-      100% { opacity: 0; transform: translate(-50%, -160px) scale(0.9) rotate(-15deg); }
+      50% { transform: translate(-50%, -80px) scale(1.2) rotate(15deg); }
+      100% { opacity: 0; transform: translate(-50%, -140px) scale(0.9) rotate(-15deg); }
     }
 
+    /* Gachapon Capsule Jiggle */
     @keyframes gachaJiggle {
       0%, 100% { transform: translate(0, 0) rotate(0deg); }
       25% { transform: translate(-8px, -12px) rotate(-15deg); }
@@ -44,91 +46,148 @@
     .shake-capsules .capsule {
       animation: gachaJiggle 0.4s ease-in-out infinite alternate;
     }
+
+    /* Holographic Shimmer Effect สำหรับการ์ด SSR */
+    .holo-card {
+      background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .holo-card::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        60deg, 
+        rgba(255,255,255,0) 20%, 
+        rgba(255,255,255,0.4) 40%, 
+        rgba(255,230,150,0.5) 50%, 
+        rgba(255,255,255,0.4) 60%, 
+        rgba(255,255,255,0) 80%
+      );
+      transform: rotate(25deg);
+      animation: shimmer 3s infinite linear;
+      pointer-events: none;
+    }
+    @keyframes shimmer {
+      0% { transform: translateY(-100%) rotate(25deg); }
+      100% { transform: translateY(100%) rotate(25deg); }
+    }
   </style>
 </head>
-<body class="bg-gradient-to-b from-pink-100 via-rose-50 to-purple-100 min-h-screen text-slate-700 flex flex-col items-center p-3 sm:p-4 overflow-x-hidden selection:bg-pink-200">
+<body class="bg-gradient-to-b from-purple-100 via-purple-50 to-amber-50 min-h-screen text-slate-700 flex flex-col items-center p-3 sm:p-4 overflow-x-hidden selection:bg-purple-200">
 
-  <!-- 1. Passcode Lock Screen (6 หลัก) -->
-  <section id="lock-screen" class="fixed inset-0 z-50 bg-rose-50/95 backdrop-blur-md flex flex-col items-center justify-center p-4 transition-all duration-500">
-    <div class="bg-white/95 p-6 rounded-[2.5rem] shadow-2xl border-4 border-pink-200 w-full max-w-[320px] text-center relative overflow-hidden">
-      <div class="text-4xl mb-2 animate-bounce">🔐</div>
-      <h2 class="text-xl font-bold text-rose-500 mb-1">รหัสลับวันเวลา</h2>
-      <p class="text-xs text-rose-400 mb-5">กดรหัสคู่รัก 6 หลักเพื่อเปิดความทรงจำ ✨</p>
+  <!-- 1. Passcode Lock Screen (6 หลัก โทนม่วง-ครีม) -->
+  <section id="lock-screen" class="fixed inset-0 z-50 bg-purple-900/40 backdrop-blur-md flex flex-col items-center justify-center p-4 transition-all duration-500">
+    <div class="bg-white/95 p-6 rounded-[2.5rem] shadow-2xl border-4 border-purple-200 w-full max-w-[320px] text-center relative overflow-hidden">
+      <div class="text-4xl mb-2 animate-bounce">🍇</div>
+      <h2 class="text-xl font-bold text-purple-700 mb-1">กล่องความลับของเกรป</h2>
+      <p class="text-xs text-purple-400 mb-5">กดรหัสคู่รัก 6 หลักเพื่อปลดล็อก ✨</p>
       
-      <!-- Dots 6 ช่องแบบกล่องชัดเจน -->
+      <!-- Dots 6 ช่อง -->
       <div id="pin-dots" class="flex justify-center gap-2 mb-6">
-        <div class="w-9 h-11 rounded-xl border-2 border-rose-200 bg-pink-50/50 flex items-center justify-center text-rose-500 font-bold text-lg shadow-inner transition-all"></div>
-        <div class="w-9 h-11 rounded-xl border-2 border-rose-200 bg-pink-50/50 flex items-center justify-center text-rose-500 font-bold text-lg shadow-inner transition-all"></div>
-        <div class="w-9 h-11 rounded-xl border-2 border-rose-200 bg-pink-50/50 flex items-center justify-center text-rose-500 font-bold text-lg shadow-inner transition-all"></div>
-        <div class="w-9 h-11 rounded-xl border-2 border-rose-200 bg-pink-50/50 flex items-center justify-center text-rose-500 font-bold text-lg shadow-inner transition-all"></div>
-        <div class="w-9 h-11 rounded-xl border-2 border-rose-200 bg-pink-50/50 flex items-center justify-center text-rose-500 font-bold text-lg shadow-inner transition-all"></div>
-        <div class="w-9 h-11 rounded-xl border-2 border-rose-200 bg-pink-50/50 flex items-center justify-center text-rose-500 font-bold text-lg shadow-inner transition-all"></div>
+        <div class="w-9 h-11 rounded-xl border-2 border-purple-200 bg-purple-50/50 flex items-center justify-center text-purple-600 font-bold text-lg shadow-inner transition-all"></div>
+        <div class="w-9 h-11 rounded-xl border-2 border-purple-200 bg-purple-50/50 flex items-center justify-center text-purple-600 font-bold text-lg shadow-inner transition-all"></div>
+        <div class="w-9 h-11 rounded-xl border-2 border-purple-200 bg-purple-50/50 flex items-center justify-center text-purple-600 font-bold text-lg shadow-inner transition-all"></div>
+        <div class="w-9 h-11 rounded-xl border-2 border-purple-200 bg-purple-50/50 flex items-center justify-center text-purple-600 font-bold text-lg shadow-inner transition-all"></div>
+        <div class="w-9 h-11 rounded-xl border-2 border-purple-200 bg-purple-50/50 flex items-center justify-center text-purple-600 font-bold text-lg shadow-inner transition-all"></div>
+        <div class="w-9 h-11 rounded-xl border-2 border-purple-200 bg-purple-50/50 flex items-center justify-center text-purple-600 font-bold text-lg shadow-inner transition-all"></div>
       </div>
 
       <!-- Keypad -->
       <div class="grid grid-cols-3 gap-2.5">
-        <button type="button" onclick="pressPin('1')" class="h-12 rounded-2xl bg-pink-50 hover:bg-pink-100 active:bg-rose-200 text-rose-600 font-bold text-lg active:scale-90 transition shadow-sm">1</button>
-        <button type="button" onclick="pressPin('2')" class="h-12 rounded-2xl bg-pink-50 hover:bg-pink-100 active:bg-rose-200 text-rose-600 font-bold text-lg active:scale-90 transition shadow-sm">2</button>
-        <button type="button" onclick="pressPin('3')" class="h-12 rounded-2xl bg-pink-50 hover:bg-pink-100 active:bg-rose-200 text-rose-600 font-bold text-lg active:scale-90 transition shadow-sm">3</button>
-        <button type="button" onclick="pressPin('4')" class="h-12 rounded-2xl bg-pink-50 hover:bg-pink-100 active:bg-rose-200 text-rose-600 font-bold text-lg active:scale-90 transition shadow-sm">4</button>
-        <button type="button" onclick="pressPin('5')" class="h-12 rounded-2xl bg-pink-50 hover:bg-pink-100 active:bg-rose-200 text-rose-600 font-bold text-lg active:scale-90 transition shadow-sm">5</button>
-        <button type="button" onclick="pressPin('6')" class="h-12 rounded-2xl bg-pink-50 hover:bg-pink-100 active:bg-rose-200 text-rose-600 font-bold text-lg active:scale-90 transition shadow-sm">6</button>
-        <button type="button" onclick="pressPin('7')" class="h-12 rounded-2xl bg-pink-50 hover:bg-pink-100 active:bg-rose-200 text-rose-600 font-bold text-lg active:scale-90 transition shadow-sm">7</button>
-        <button type="button" onclick="pressPin('8')" class="h-12 rounded-2xl bg-pink-50 hover:bg-pink-100 active:bg-rose-200 text-rose-600 font-bold text-lg active:scale-90 transition shadow-sm">8</button>
-        <button type="button" onclick="pressPin('9')" class="h-12 rounded-2xl bg-pink-50 hover:bg-pink-100 active:bg-rose-200 text-rose-600 font-bold text-lg active:scale-90 transition shadow-sm">9</button>
+        <button type="button" onclick="pressPin('1')" class="h-12 rounded-2xl bg-purple-50 hover:bg-purple-100 active:bg-purple-200 text-purple-700 font-bold text-lg active:scale-90 transition shadow-sm">1</button>
+        <button type="button" onclick="pressPin('2')" class="h-12 rounded-2xl bg-purple-50 hover:bg-purple-100 active:bg-purple-200 text-purple-700 font-bold text-lg active:scale-90 transition shadow-sm">2</button>
+        <button type="button" onclick="pressPin('3')" class="h-12 rounded-2xl bg-purple-50 hover:bg-purple-100 active:bg-purple-200 text-purple-700 font-bold text-lg active:scale-90 transition shadow-sm">3</button>
+        <button type="button" onclick="pressPin('4')" class="h-12 rounded-2xl bg-purple-50 hover:bg-purple-100 active:bg-purple-200 text-purple-700 font-bold text-lg active:scale-90 transition shadow-sm">4</button>
+        <button type="button" onclick="pressPin('5')" class="h-12 rounded-2xl bg-purple-50 hover:bg-purple-100 active:bg-purple-200 text-purple-700 font-bold text-lg active:scale-90 transition shadow-sm">5</button>
+        <button type="button" onclick="pressPin('6')" class="h-12 rounded-2xl bg-purple-50 hover:bg-purple-100 active:bg-purple-200 text-purple-700 font-bold text-lg active:scale-90 transition shadow-sm">6</button>
+        <button type="button" onclick="pressPin('7')" class="h-12 rounded-2xl bg-purple-50 hover:bg-purple-100 active:bg-purple-200 text-purple-700 font-bold text-lg active:scale-90 transition shadow-sm">7</button>
+        <button type="button" onclick="pressPin('8')" class="h-12 rounded-2xl bg-purple-50 hover:bg-purple-100 active:bg-purple-200 text-purple-700 font-bold text-lg active:scale-90 transition shadow-sm">8</button>
+        <button type="button" onclick="pressPin('9')" class="h-12 rounded-2xl bg-purple-50 hover:bg-purple-100 active:bg-purple-200 text-purple-700 font-bold text-lg active:scale-90 transition shadow-sm">9</button>
         <button type="button" onclick="clearPin()" class="h-12 rounded-2xl bg-slate-100 active:bg-slate-200 text-slate-400 font-semibold text-xs active:scale-90 transition">ลบ</button>
-        <button type="button" onclick="pressPin('0')" class="h-12 rounded-2xl bg-pink-50 hover:bg-pink-100 active:bg-rose-200 text-rose-600 font-bold text-lg active:scale-90 transition shadow-sm">0</button>
-        <button type="button" onclick="checkPin()" class="h-12 rounded-2xl bg-rose-400 hover:bg-rose-500 text-white font-bold text-lg active:scale-90 transition shadow-md shadow-rose-200">💖</button>
+        <button type="button" onclick="pressPin('0')" class="h-12 rounded-2xl bg-purple-50 hover:bg-purple-100 active:bg-purple-200 text-purple-700 font-bold text-lg active:scale-90 transition shadow-sm">0</button>
+        <button type="button" onclick="checkPin()" class="h-12 rounded-2xl bg-purple-500 hover:bg-purple-600 text-white font-bold text-lg active:scale-90 transition shadow-md shadow-purple-200">💜</button>
       </div>
-      <p id="error-msg" class="text-xs text-rose-500 mt-3 opacity-0 transition-opacity font-medium">รหัสยังไม่ใช่น้าาที่รัก ลองนึกดูดีๆ 🥺</p>
+      <p id="error-msg" class="text-xs text-purple-600 mt-3 opacity-0 transition-opacity font-medium">รหัสยังไม่ใช่น้าาที่รัก ลองนึกดูดีๆ 🥺</p>
     </div>
   </section>
 
   <!-- 2. Main Anniversary Content Container -->
-  <main class="w-full max-w-[360px] sm:max-w-sm flex flex-col items-center gap-5 pt-3 pb-16">
+  <main class="w-full max-w-[360px] sm:max-w-sm flex flex-col items-center gap-5 pt-3 pb-20">
 
     <!-- Header Section -->
     <header class="text-center w-full px-2">
-      <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-white/70 backdrop-blur border border-pink-200 text-rose-500 rounded-full text-[11px] font-semibold mb-2 shadow-sm">
-        <span class="animate-pulse">🌸</span> Our Sweet Anniversary
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-white/80 backdrop-blur border border-purple-200 text-purple-700 rounded-full text-[11px] font-semibold mb-2 shadow-sm">
+        <span>🍇</span> Dear & Grape Special Day
       </div>
-      <h1 class="text-2xl sm:text-3xl font-bold text-rose-600 tracking-tight">Happy Anniversary</h1>
-      <p class="text-xs text-rose-400 mt-1 leading-relaxed">
-        ขอบคุณที่เข้ามาเป็นรอยยิ้มให้กันเสมอมานะ<br>ทะเลาะกันบ้างแต่เค้าก็รักเธอที่สุดเลย 🌷
+      <h1 class="text-2xl sm:text-3xl font-bold text-purple-800 tracking-tight">Happy Anniversary</h1>
+      <p class="text-xs text-purple-500 mt-1 leading-relaxed">
+        ขอบคุณที่เข้ามาเป็นรอยยิ้มให้กันเสมอมานะ<br>ทะเลาะกันบ้างแต่เค้าก็รักเกรปที่สุดในโลกเลย 🤍
       </p>
     </header>
 
-    <!-- Real-Time Counter Card -->
-    <div class="bg-white/90 backdrop-blur-md w-full p-4 sm:p-5 rounded-3xl shadow-lg border border-pink-100 text-center relative overflow-hidden">
-      <span class="text-3xl absolute -right-1 -bottom-1 opacity-20 pointer-events-none">🎀</span>
-      <p class="text-xs text-rose-400 font-medium mb-3 flex items-center justify-center gap-1.5">
-        <span>⏱️</span> ช่วงเวลาแห่งความสุขที่อยู่ด้วยกัน
+    <!-- Real-Time Counter Card (โทนม่วง Lavender) -->
+    <div class="bg-white/90 backdrop-blur-md w-full p-4 sm:p-5 rounded-3xl shadow-lg border border-purple-100 text-center relative overflow-hidden">
+      <span class="text-3xl absolute -right-1 -bottom-1 opacity-20 pointer-events-none">💜</span>
+      <p class="text-xs text-purple-500 font-medium mb-3 flex items-center justify-center gap-1.5">
+        <span>⏱️</span> เดินทางด้วยกันมาแล้วทั้งหมด
       </p>
       <div class="grid grid-cols-4 gap-2">
-        <div class="bg-gradient-to-b from-rose-50 to-pink-50/70 p-2 rounded-2xl border border-pink-100/60 shadow-sm">
-          <span id="days" class="text-lg sm:text-xl font-bold text-rose-500 block leading-tight">0</span>
-          <span class="text-[10px] text-rose-400">วัน</span>
+        <div class="bg-gradient-to-b from-purple-50 to-indigo-50/50 p-2 rounded-2xl border border-purple-100/60 shadow-sm">
+          <span id="days" class="text-lg sm:text-xl font-bold text-purple-700 block leading-tight">0</span>
+          <span class="text-[10px] text-purple-400">วัน</span>
         </div>
-        <div class="bg-gradient-to-b from-rose-50 to-pink-50/70 p-2 rounded-2xl border border-pink-100/60 shadow-sm">
-          <span id="hours" class="text-lg sm:text-xl font-bold text-rose-500 block leading-tight">0</span>
-          <span class="text-[10px] text-rose-400">ชั่วโมง</span>
+        <div class="bg-gradient-to-b from-purple-50 to-indigo-50/50 p-2 rounded-2xl border border-purple-100/60 shadow-sm">
+          <span id="hours" class="text-lg sm:text-xl font-bold text-purple-700 block leading-tight">0</span>
+          <span class="text-[10px] text-purple-400">ชั่วโมง</span>
         </div>
-        <div class="bg-gradient-to-b from-rose-50 to-pink-50/70 p-2 rounded-2xl border border-pink-100/60 shadow-sm">
-          <span id="minutes" class="text-lg sm:text-xl font-bold text-rose-500 block leading-tight">0</span>
-          <span class="text-[10px] text-rose-400">นาที</span>
+        <div class="bg-gradient-to-b from-purple-50 to-indigo-50/50 p-2 rounded-2xl border border-purple-100/60 shadow-sm">
+          <span id="minutes" class="text-lg sm:text-xl font-bold text-purple-700 block leading-tight">0</span>
+          <span class="text-[10px] text-purple-400">นาที</span>
         </div>
-        <div class="bg-gradient-to-b from-rose-50 to-pink-50/70 p-2 rounded-2xl border border-pink-100/60 shadow-sm">
-          <span id="seconds" class="text-lg sm:text-xl font-bold text-rose-500 block leading-tight">0</span>
-          <span class="text-[10px] text-rose-400">วินาที</span>
+        <div class="bg-gradient-to-b from-purple-50 to-indigo-50/50 p-2 rounded-2xl border border-purple-100/60 shadow-sm">
+          <span id="seconds" class="text-lg sm:text-xl font-bold text-purple-700 block leading-tight">0</span>
+          <span class="text-[10px] text-purple-400">วินาที</span>
         </div>
       </div>
     </div>
 
-    <!-- 3. Polaroid Slider Section -->
+    <!-- 3. Where It All Began: ตั๋วความทรงจำฟิวเจอร์ปาร์ครังสิต -->
+    <div class="w-full bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-700 text-white p-5 rounded-3xl shadow-xl border-2 border-purple-300 relative overflow-hidden">
+      <!-- รอยบากตั๋วซ้ายขวา -->
+      <span class="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-purple-100 rounded-full"></span>
+      <span class="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-purple-100 rounded-full"></span>
+
+      <div class="flex items-center justify-between border-b border-purple-300/40 pb-2 mb-3">
+        <span class="text-[10px] uppercase tracking-wider text-purple-200 font-bold">🎟️ Memory Boarding Pass</span>
+        <span class="text-[10px] bg-white/20 px-2 py-0.5 rounded-full text-purple-100 font-semibold">จุดเริ่มต้นความรัก</span>
+      </div>
+
+      <div class="text-center my-2">
+        <div class="text-lg font-bold tracking-wide flex items-center justify-center gap-1.5">
+          <span>📍</span> ฟิวเจอร์ปาร์ครังสิต
+        </div>
+        <p class="text-[11px] text-purple-200 mt-1 leading-relaxed">
+          "สถานที่ที่หัวใจเต้นแรงที่สุดในชีวิต<br>
+          วันที่เค้าขอเธอเป็นแฟน และมีเธอข้างกายมาตั้งแต่วันนั้น"
+        </p>
+      </div>
+
+      <div class="border-t border-dashed border-purple-300/40 pt-2.5 mt-3 flex justify-between items-center text-[10px] text-purple-200">
+        <span>PASSENGER: เกรป & เดียร์</span>
+        <span class="font-bold text-amber-300">STATUS: IN LOVE FOREVER ✨</span>
+      </div>
+    </div>
+
+    <!-- 4. Polaroid Slider Section (รูปคู่ 3 รูปเดิม) -->
     <div class="w-full flex flex-col items-center">
       <div class="flex items-center justify-between w-full px-2 mb-2">
-        <span class="text-xs font-bold text-rose-500 flex items-center gap-1">📸 Our Sweet Memories</span>
-        <span class="text-[10px] text-rose-400 bg-rose-50 px-2 py-0.5 rounded-full border border-pink-200">แตะรูปเพื่อพลิกอ่าน 💌</span>
+        <span class="text-xs font-bold text-purple-700 flex items-center gap-1">📸 Our Sweet Memories</span>
+        <span class="text-[10px] text-purple-500 bg-purple-100/70 px-2.5 py-0.5 rounded-full border border-purple-200">แตะรูปเพื่อพลิกอ่าน 💌</span>
       </div>
 
       <div class="relative w-full max-w-[280px] h-[370px] perspective touch-pan-y" id="carousel-area">
@@ -136,20 +195,20 @@
         <!-- Slide 1 -->
         <div class="photo-slide absolute inset-0 transition-all duration-500 cursor-pointer" onclick="flipCard(this)">
           <div class="card-inner relative w-full h-full preserve-3d duration-500 rounded-3xl shadow-xl">
-            <div class="absolute inset-0 bg-white p-3 rounded-3xl flex flex-col items-center backface-hidden border-2 border-pink-100 shadow-md">
-              <div class="w-full h-[270px] bg-pink-50 rounded-2xl overflow-hidden mb-2.5">
+            <div class="absolute inset-0 bg-white p-3 rounded-3xl flex flex-col items-center backface-hidden border-2 border-purple-100 shadow-md">
+              <div class="w-full h-[270px] bg-purple-50 rounded-2xl overflow-hidden mb-2.5">
                 <img src="กอดเท่.jpg" alt="Memory 1" class="w-full h-full object-cover">
               </div>
-              <p class="text-xs font-bold text-rose-500">ยืนเคียงข้างกันในทุกๆ วัน 🫶</p>
+              <p class="text-xs font-bold text-purple-700">ยืนเคียงข้างกันในทุกๆ วัน 🫶</p>
             </div>
-            <div class="absolute inset-0 bg-gradient-to-br from-rose-400 to-pink-500 p-6 rounded-3xl flex flex-col items-center justify-center text-center backface-hidden rotate-y-180 text-white shadow-xl">
+            <div class="absolute inset-0 bg-gradient-to-br from-purple-500 to-indigo-600 p-6 rounded-3xl flex flex-col items-center justify-center text-center backface-hidden rotate-y-180 text-white shadow-xl">
               <span class="text-3xl mb-3">💐</span>
               <p class="text-sm leading-relaxed">
                 "ไม่ว่าจะผ่านไปกี่วัน<br>
                 เค้าก็ยังอยากยืนข้างเธอแบบนี้<br>
                 ขอบคุณที่คอยเป็นพลังบวกให้กันเสมอนะ"
               </p>
-              <span class="text-xs mt-4 text-pink-100 font-medium">รักที่สุดเลย 🤍</span>
+              <span class="text-xs mt-4 text-purple-200 font-medium">รักที่สุดเลย 🤍</span>
             </div>
           </div>
         </div>
@@ -157,20 +216,20 @@
         <!-- Slide 2 -->
         <div class="photo-slide absolute inset-0 transition-all duration-500 opacity-0 pointer-events-none cursor-pointer" onclick="flipCard(this)">
           <div class="card-inner relative w-full h-full preserve-3d duration-500 rounded-3xl shadow-xl">
-            <div class="absolute inset-0 bg-white p-3 rounded-3xl flex flex-col items-center backface-hidden border-2 border-pink-100 shadow-md">
-              <div class="w-full h-[270px] bg-pink-50 rounded-2xl overflow-hidden mb-2.5">
+            <div class="absolute inset-0 bg-white p-3 rounded-3xl flex flex-col items-center backface-hidden border-2 border-purple-100 shadow-md">
+              <div class="w-full h-[270px] bg-purple-50 rounded-2xl overflow-hidden mb-2.5">
                 <img src="จุ่มแก้ม.jpg" alt="Memory 2" class="w-full h-full object-cover">
               </div>
-              <p class="text-xs font-bold text-rose-500">จุ่มแก้มใบแรของเค้า 😘</p>
+              <p class="text-xs font-bold text-purple-700">จุ่มแก้มใบแรของเค้า 😘</p>
             </div>
-            <div class="absolute inset-0 bg-gradient-to-br from-rose-400 to-pink-500 p-6 rounded-3xl flex flex-col items-center justify-center text-center backface-hidden rotate-y-180 text-white shadow-xl">
+            <div class="absolute inset-0 bg-gradient-to-br from-purple-500 to-indigo-600 p-6 rounded-3xl flex flex-col items-center justify-center text-center backface-hidden rotate-y-180 text-white shadow-xl">
               <span class="text-3xl mb-3">✨</span>
               <p class="text-sm leading-relaxed">
                 "เวลาเห็นเธอทำหน้าตาน่ารัก<br>
                 แล้วถือดอกไม้<br>
                 โลกสดใสขึ้นเป็นกองเลยนะรู้ไหม"
               </p>
-              <span class="text-xs mt-4 text-pink-100 font-medium">น่ารักที่สุดในโลก 🐰</span>
+              <span class="text-xs mt-4 text-purple-200 font-medium">น่ารักที่สุดในโลก 🐰</span>
             </div>
           </div>
         </div>
@@ -178,20 +237,20 @@
         <!-- Slide 3 -->
         <div class="photo-slide absolute inset-0 transition-all duration-500 opacity-0 pointer-events-none cursor-pointer" onclick="flipCard(this)">
           <div class="card-inner relative w-full h-full preserve-3d duration-500 rounded-3xl shadow-xl">
-            <div class="absolute inset-0 bg-white p-3 rounded-3xl flex flex-col items-center backface-hidden border-2 border-pink-100 shadow-md">
-              <div class="w-full h-[270px] bg-pink-50 rounded-2xl overflow-hidden mb-2.5">
+            <div class="absolute inset-0 bg-white p-3 rounded-3xl flex flex-col items-center backface-hidden border-2 border-purple-100 shadow-md">
+              <div class="w-full h-[270px] bg-purple-50 rounded-2xl overflow-hidden mb-2.5">
                 <img src="หอมแก้ม.jpg" alt="Memory 3" class="w-full h-full object-cover">
               </div>
-              <p class="text-xs font-bold text-rose-500">เติมพลังให้กันทุกวัน 💖</p>
+              <p class="text-xs font-bold text-purple-700">เติมพลังให้กันทุกวัน 💖</p>
             </div>
-            <div class="absolute inset-0 bg-gradient-to-br from-rose-400 to-pink-500 p-6 rounded-3xl flex flex-col items-center justify-center text-center backface-hidden rotate-y-180 text-white shadow-xl">
+            <div class="absolute inset-0 bg-gradient-to-br from-purple-500 to-indigo-600 p-6 rounded-3xl flex flex-col items-center justify-center text-center backface-hidden rotate-y-180 text-white shadow-xl">
               <span class="text-3xl mb-3">🥰</span>
               <p class="text-sm leading-relaxed">
                 "ขอหอมแก้มเป็นกำลังใจแบบนี้<br>
                 ไปเรื่อยๆ ทุกปีเลยนะ<br>
                 อยู่เป็นความสุขของกันและกันตลอดไปนะ"
               </p>
-              <span class="text-xs mt-4 text-pink-100 font-medium">รักแฟนมากๆ ครับ 🌷</span>
+              <span class="text-xs mt-4 text-purple-200 font-medium">รักแฟนมากๆ ครับ 🌷</span>
             </div>
           </div>
         </div>
@@ -200,38 +259,63 @@
 
       <!-- Controls & Dots -->
       <div class="flex items-center gap-4 mt-3">
-        <button onclick="prevSlide()" class="w-8 h-8 rounded-full bg-white shadow-sm border border-pink-100 text-rose-500 font-bold flex items-center justify-center active:scale-90 transition">‹</button>
+        <button onclick="prevSlide()" class="w-8 h-8 rounded-full bg-white shadow-sm border border-purple-100 text-purple-600 font-bold flex items-center justify-center active:scale-90 transition">‹</button>
         <div class="flex gap-2" id="slide-indicators">
-          <span class="w-2.5 h-2.5 rounded-full bg-rose-500 transition-all"></span>
-          <span class="w-2.5 h-2.5 rounded-full bg-rose-200 transition-all"></span>
-          <span class="w-2.5 h-2.5 rounded-full bg-rose-200 transition-all"></span>
+          <span class="w-4 h-2.5 rounded-full bg-purple-600 transition-all"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-purple-200 transition-all"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-purple-200 transition-all"></span>
         </div>
-        <button onclick="nextSlide()" class="w-8 h-8 rounded-full bg-white shadow-md border border-pink-100 text-rose-500 font-bold flex items-center justify-center active:scale-90 transition">›</button>
+        <button onclick="nextSlide()" class="w-8 h-8 rounded-full bg-white shadow-md border border-purple-100 text-purple-600 font-bold flex items-center justify-center active:scale-90 transition">›</button>
       </div>
     </div>
 
-    <!-- 4. Mini-Game: Gachapon Machine -->
-    <div class="w-full bg-white/90 backdrop-blur-md rounded-[2.5rem] p-5 shadow-xl border border-pink-200 flex flex-col items-center relative">
-      <div class="inline-block px-3 py-1 bg-pink-100 text-rose-600 rounded-full text-[11px] font-bold mb-2">
-        🎰 ตู้หมุนไข่ความรักตามใจแฟน
+    <!-- 5. Mini-Game: ฉีกซองการ์ด DMD ลุ้นการ์ด SSR ลายเซ็นต์ทอง -->
+    <div class="w-full bg-white/90 backdrop-blur-md rounded-[2.5rem] p-5 shadow-xl border border-purple-200 flex flex-col items-center text-center">
+      <div class="inline-block px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-[11px] font-bold mb-1">
+        ✨ DMD SPECIAL ANNIVERSARY PACK
       </div>
-      <p class="text-[11px] text-rose-400 text-center mb-3">หมุนคันโยกเพื่อลุ้นรับคูปองรางวัลวันนี้ ✨</p>
+      <p class="text-xs text-purple-700 font-bold mt-1">ซองการ์ดสุ่มใบแรลิมิเต็ด</p>
+      <p class="text-[10px] text-purple-400 mb-4">แตะที่ซองการ์ดเพื่อเปิดลุ้นการ์ดไซน์ทอง 🌟</p>
 
-      <div class="relative w-48 h-40 bg-gradient-to-b from-pink-50/70 to-rose-100/80 rounded-t-full border-4 border-b-0 border-pink-300 shadow-inner overflow-hidden flex items-end justify-center pb-2" id="gacha-dome">
+      <!-- ซองการ์ดฟอยล์ -->
+      <div id="card-pack" onclick="openPhotocardPack()" class="w-48 h-64 bg-gradient-to-tr from-purple-600 via-indigo-500 to-pink-500 rounded-2xl shadow-2xl p-3 border-2 border-amber-300 relative cursor-pointer active:scale-95 transition-transform flex flex-col items-center justify-between overflow-hidden">
+        <div class="w-full border-b border-dashed border-white/60 pb-1 text-[9px] text-white/90 flex justify-between">
+          <span>LIMITED EDITION</span>
+          <span>DMD x DEAR</span>
+        </div>
+        <div class="text-center my-auto">
+          <div class="text-4xl animate-bounce mb-1">🎴</div>
+          <p class="text-xs font-bold text-amber-300 drop-shadow">SSR GUARANTEED</p>
+          <span class="text-[10px] text-white/90">แตะเพื่อฉีกซอง! ✂️</span>
+        </div>
+        <div class="w-full text-center text-[9px] text-purple-200 bg-black/20 py-1 rounded">
+          FOR MY GRAPE ONLY 🍇
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Mini-Game: Gachapon Machine (ตู้หมุนไข่กาชาปองความรัก) -->
+    <div class="w-full bg-white/90 backdrop-blur-md rounded-[2.5rem] p-5 shadow-xl border border-purple-200 flex flex-col items-center relative">
+      <div class="inline-block px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-[11px] font-bold mb-2">
+        🎰 ตู้หมุนไข่ความรักตามใจเกรป
+      </div>
+      <p class="text-[11px] text-purple-400 text-center mb-3">หมุนคันโยกเพื่อลุ้นรับคูปองรางวัลวันนี้ ✨</p>
+
+      <div class="relative w-48 h-40 bg-gradient-to-b from-purple-50/70 to-indigo-100/80 rounded-t-full border-4 border-b-0 border-purple-300 shadow-inner overflow-hidden flex items-end justify-center pb-2" id="gacha-dome">
         <div class="absolute top-2 left-6 w-8 h-12 bg-white/40 rounded-full blur-[1px] rotate-[-20deg]"></div>
         <div class="relative w-36 h-28 flex flex-wrap justify-center items-end gap-2" id="capsule-container">
-          <div class="capsule w-8 h-8 rounded-full bg-gradient-to-tr from-rose-400 to-pink-200 shadow-md border border-white flex items-center justify-center text-xs">💖</div>
+          <div class="capsule w-8 h-8 rounded-full bg-gradient-to-tr from-purple-400 to-indigo-200 shadow-md border border-white flex items-center justify-center text-xs">🍇</div>
           <div class="capsule w-8 h-8 rounded-full bg-gradient-to-tr from-amber-300 to-yellow-100 shadow-md border border-white flex items-center justify-center text-xs">⭐</div>
-          <div class="capsule w-8 h-8 rounded-full bg-gradient-to-tr from-purple-400 to-indigo-200 shadow-md border border-white flex items-center justify-center text-xs">🎀</div>
-          <div class="capsule w-8 h-8 rounded-full bg-gradient-to-tr from-emerald-400 to-teal-200 shadow-md border border-white flex items-center justify-center text-xs">🍀</div>
-          <div class="capsule w-8 h-8 rounded-full bg-gradient-to-tr from-sky-400 to-blue-200 shadow-md border border-white flex items-center justify-center text-xs">💌</div>
+          <div class="capsule w-8 h-8 rounded-full bg-gradient-to-tr from-rose-400 to-pink-200 shadow-md border border-white flex items-center justify-center text-xs">💖</div>
+          <div class="capsule w-8 h-8 rounded-full bg-gradient-to-tr from-emerald-400 to-teal-200 shadow-md border border-white flex items-center justify-center text-xs">🏸</div>
+          <div class="capsule w-8 h-8 rounded-full bg-gradient-to-tr from-sky-400 to-blue-200 shadow-md border border-white flex items-center justify-center text-xs">🐶</div>
         </div>
       </div>
 
-      <div class="w-56 bg-gradient-to-b from-rose-400 to-pink-500 rounded-3xl p-4 shadow-lg border-2 border-rose-300 flex flex-col items-center relative -mt-1">
+      <div class="w-56 bg-gradient-to-b from-purple-500 to-indigo-600 rounded-3xl p-4 shadow-lg border-2 border-purple-300 flex flex-col items-center relative -mt-1">
         <div class="relative flex flex-col items-center my-1">
-          <button id="gacha-knob" onclick="spinGachapon()" class="w-14 h-14 rounded-full bg-white shadow-md border-4 border-rose-200 flex items-center justify-center active:scale-95 transition-transform duration-700 ease-out">
-            <div class="w-10 h-3 bg-rose-400 rounded-full shadow-inner flex items-center justify-between px-1">
+          <button id="gacha-knob" onclick="spinGachapon()" class="w-14 h-14 rounded-full bg-white shadow-md border-4 border-purple-200 flex items-center justify-center active:scale-95 transition-transform duration-700 ease-out">
+            <div class="w-10 h-3 bg-purple-500 rounded-full shadow-inner flex items-center justify-between px-1">
               <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
               <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
             </div>
@@ -239,58 +323,186 @@
           <span class="text-[10px] text-white font-bold mt-1.5 drop-shadow">แตะเพื่อหมุน 🪙</span>
         </div>
 
-        <div class="w-24 h-7 bg-rose-900/40 rounded-full border-2 border-rose-300/80 mt-2 flex items-center justify-center overflow-hidden relative">
-          <span id="prize-ready-glow" class="text-[10px] text-pink-200 font-medium">รอไข่ตก...</span>
+        <div class="w-24 h-7 bg-purple-950/40 rounded-full border-2 border-purple-300/80 mt-2 flex items-center justify-center overflow-hidden relative">
+          <span id="prize-ready-glow" class="text-[10px] text-purple-200 font-medium">รอไข่ตก...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. Grape's Favorite Menu: ใบเสร็จความสุขตามใจเกรป -->
+    <div class="w-full bg-white rounded-3xl p-5 shadow-lg border-2 border-dashed border-purple-300 relative text-left">
+      <div class="text-center border-b border-dashed border-purple-200 pb-2 mb-3">
+        <span class="text-lg">🧾</span>
+        <h3 class="text-xs font-bold text-purple-700 uppercase">ใบเสร็จตามใจคนเก่ง (GRAPE's ONLY)</h3>
+        <p class="text-[10px] text-purple-400">TABLE: โต๊ะโปรดของเกรปกับเดียร์</p>
+      </div>
+
+      <div class="space-y-2 text-xs text-slate-600 mb-3">
+        <div class="flex justify-between items-center">
+          <div>
+            <p class="font-bold text-purple-800">1. ส้มตำปูปลาร้า 🥗</p>
+            <p class="text-[10px] text-rose-500">*โน้ต: เผ็ดน้อยมากกกก / ไม่ใส่ชูรส!</p>
+          </div>
+          <span class="font-bold text-purple-600">ฟรีตลอดชีพ</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <div>
+            <p class="font-bold text-purple-800">2. บุฟเฟต์ของหวานไม่อั้น 🍨</p>
+            <p class="text-[10px] text-slate-400">*เพราะยัยเกรปกินเก่งที่สุด</p>
+          </div>
+          <span class="font-bold text-purple-600">เดียร์จ่ายเอง</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <div>
+            <p class="font-bold text-purple-800">3. คู่ซ้อมตีแบดมินตัน 🏸</p>
+            <p class="text-[10px] text-slate-400">*บริการเก็บลูกแบดให้ไม่อั้น</p>
+          </div>
+          <span class="font-bold text-purple-600">พร้อมเสมอ</span>
         </div>
       </div>
 
+      <div class="border-t border-dashed border-purple-200 pt-2 flex justify-between items-center text-xs font-bold text-purple-700">
+        <span>ยอดรวมความรัก:</span>
+        <span class="text-sm">MAX ∞ บาท</span>
+      </div>
+    </div>
+
+    <!-- 8. Our Story Photo Dump (คลังรูปภาพเพิ่มเติม) -->
+    <div class="w-full bg-white/90 backdrop-blur-md rounded-[2.5rem] p-5 shadow-xl border border-purple-200 text-center">
+      <div class="inline-block px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-[11px] font-bold mb-1">
+        📁 Our Photo Dump
+      </div>
+      <p class="text-xs font-bold text-purple-800 mt-1">รวมโมเมนต์น่ารักของเกรป</p>
+      <p class="text-[10px] text-purple-400 mb-4">แตะที่รูปเพื่อดูความทรงจำ 🤍</p>
+
+      <!-- ตารางรูป 4 ช่อง (สามารถเปลี่ยนหรือใส่รูปเพิ่มได้ตามใจชอบ) -->
+      <div class="grid grid-cols-2 gap-2.5">
+        <div class="bg-purple-50 p-2 rounded-2xl border border-purple-100 shadow-sm">
+          <div class="w-full h-32 rounded-xl overflow-hidden mb-1.5 bg-purple-100">
+            <img src="กอดเท่.jpg" alt="Gallery 1" class="w-full h-full object-cover">
+          </div>
+          <p class="text-[10px] font-bold text-purple-700 truncate">ยืนเคียงข้างกัน 🫶</p>
+        </div>
+        <div class="bg-purple-50 p-2 rounded-2xl border border-purple-100 shadow-sm">
+          <div class="w-full h-32 rounded-xl overflow-hidden mb-1.5 bg-purple-100">
+            <img src="จุ่มแก้ม.jpg" alt="Gallery 2" class="w-full h-full object-cover">
+          </div>
+          <p class="text-[10px] font-bold text-purple-700 truncate">จุ่มแก้มคนเก่ง 😘</p>
+        </div>
+        <div class="bg-purple-50 p-2 rounded-2xl border border-purple-100 shadow-sm">
+          <div class="w-full h-32 rounded-xl overflow-hidden mb-1.5 bg-purple-100">
+            <img src="หอมแก้ม.jpg" alt="Gallery 3" class="w-full h-full object-cover">
+          </div>
+          <p class="text-[10px] font-bold text-purple-700 truncate">หอมแก้มชื่นใจ 💖</p>
+        </div>
+        <!-- ช่องใส่รูปเพิ่ม (เปลี่ยนรูปตรงนี้ได้เลย) -->
+        <div class="bg-purple-50 p-2 rounded-2xl border border-purple-100 shadow-sm flex flex-col items-center justify-center">
+          <div class="w-full h-32 rounded-xl overflow-hidden mb-1.5 bg-purple-100 flex items-center justify-center">
+            <span class="text-3xl">🐾</span>
+          </div>
+          <p class="text-[10px] font-bold text-purple-700 truncate">เฉาก๊วยพยานรัก 🐶</p>
+        </div>
+      </div>
     </div>
 
   </main>
 
-  <!-- 5. Capsule Open Pop-up Modal -->
+  <!-- 9. Floating Mascot: น้อง "เฉาก๊วย" (มุมจอล่างขวา) -->
+  <div class="fixed bottom-4 right-4 z-40 flex flex-col items-end">
+    <!-- กล่องคำพูดของน้องเฉาก๊วย -->
+    <div id="chaokuay-bubble" class="bg-white/95 border-2 border-purple-300 text-purple-800 text-[11px] font-medium py-1.5 px-3 rounded-2xl rounded-br-none shadow-xl mb-1.5 max-w-[180px] opacity-0 pointer-events-none transition-all duration-300">
+      โฮ่ง! แม่เกรปน่ารักที่สุดเลย 🐶
+    </div>
+    <!-- ปุ่มตัวน้องเฉาก๊วย -->
+    <button onclick="petChaoKuay()" class="w-13 h-13 p-2.5 rounded-full bg-slate-900 border-2 border-purple-300 shadow-2xl active:scale-90 transition-transform flex items-center justify-center">
+      <span class="text-2xl animate-pulse">🐶</span>
+    </button>
+  </div>
+
+  <!-- 10. Photocard Modal (การ์ด SSR ไซน์ทองของ DMD) -->
+  <div id="photocard-modal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+    <div class="w-full max-w-[290px] holo-card p-4 rounded-3xl shadow-2xl border-4 border-amber-300 text-center relative scale-90 transition-all duration-300" id="photocard-box">
+      
+      <div class="flex justify-between items-center text-[10px] font-bold text-purple-900 mb-2">
+        <span class="bg-amber-300 px-2 py-0.5 rounded-full">SSR RARE</span>
+        <span>DMD SPECIAL EDITION</span>
+      </div>
+
+      <!-- กรอบรูปการ์ด -->
+      <div class="w-full h-72 rounded-2xl overflow-hidden border-2 border-white/80 shadow-md mb-2 relative bg-white">
+        <img src="หอมแก้ม.jpg" alt="SSR Photocard" class="w-full h-full object-cover">
+        <!-- ลายเซ็นทองจำลอง -->
+        <div class="absolute bottom-2 right-2 bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-lg border border-amber-300/80">
+          <p class="text-[11px] font-bold text-amber-300 italic tracking-wider">✍️ Signed by Dear</p>
+        </div>
+      </div>
+
+      <h4 class="text-sm font-bold text-purple-950 mt-1">เกรป & เดียร์ (ANNIVERSARY VER.)</h4>
+      <div class="flex justify-center gap-3 text-[10px] text-purple-900 font-semibold my-1.5">
+        <span>ความน่ารัก: MAX ★★★★★</span>
+        <span>กินเก่ง: 9999+</span>
+      </div>
+      <p class="text-[10px] text-purple-800 italic mb-3">"การ์ดใบแรใบนี้มีใบเดียวในโลก  🤍"</p>
+
+      <button onclick="closePhotocardModal()" class="w-full py-2.5 bg-gradient-to-r from-purple-700 to-indigo-800 text-white rounded-xl font-bold text-xs shadow-md active:scale-95 transition">
+        เก็บเข้าอัลบั้มการ์ด 🎴
+      </button>
+    </div>
+  </div>
+
+  <!-- 11. Capsule Open Pop-up Modal (คูปองความรัก) -->
   <div id="reward-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
-    <div class="bg-gradient-to-b from-white to-rose-50 p-6 rounded-[2.5rem] border-4 border-pink-300 shadow-2xl max-w-xs w-full text-center relative scale-90 transition-all duration-300" id="reward-box">
+    <div class="bg-gradient-to-b from-white to-purple-50 p-6 rounded-[2.5rem] border-4 border-purple-300 shadow-2xl max-w-xs w-full text-center relative scale-90 transition-all duration-300" id="reward-box">
       <div class="text-6xl mb-3 animate-bounce">🎁</div>
-      <div class="inline-block px-3 py-1 bg-rose-100 text-rose-500 rounded-full text-[10px] font-bold mb-2">
+      <div class="inline-block px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-[10px] font-bold mb-2">
         ยินดีด้วยน้าาา 🎉
       </div>
-      <h3 class="text-lg font-bold text-rose-600 mb-3">ได้รับคูปองความรัก!</h3>
+      <h3 class="text-lg font-bold text-purple-800 mb-3">ได้รับคูปองความรัก!</h3>
 
-      <div class="bg-white border-2 border-dashed border-rose-300 rounded-2xl p-4 shadow-sm mb-5 relative">
-        <span class="absolute -left-3 top-1/2 -translate-y-1/2 w-5 h-5 bg-rose-50 rounded-full border-r-2 border-rose-300"></span>
-        <span class="absolute -right-3 top-1/2 -translate-y-1/2 w-5 h-5 bg-rose-50 rounded-full border-l-2 border-rose-300"></span>
-        <p id="reward-text" class="text-sm font-bold text-rose-500 leading-relaxed">
+      <div class="bg-white border-2 border-dashed border-purple-300 rounded-2xl p-4 shadow-sm mb-5 relative">
+        <span class="absolute -left-3 top-1/2 -translate-y-1/2 w-5 h-5 bg-purple-50 rounded-full border-r-2 border-purple-300"></span>
+        <span class="absolute -right-3 top-1/2 -translate-y-1/2 w-5 h-5 bg-purple-50 rounded-full border-l-2 border-purple-300"></span>
+        <p id="reward-text" class="text-sm font-bold text-purple-700 leading-relaxed">
           คูปองพิเศษ
         </p>
-        <span class="text-[10px] text-rose-300 block mt-1 font-normal">*ใช้สิทธิ์กับแฟนได้ทันที ไม่มีหมดอายุ 💖</span>
+        <span class="text-[10px] text-purple-400 block mt-1 font-normal">*ใช้สิทธิ์กับเดียร์ได้ทันที ไม่มีหมดอายุ 💜</span>
       </div>
 
-      <button onclick="closeRewardModal()" class="w-full py-3 bg-gradient-to-r from-rose-400 to-pink-500 text-white rounded-2xl font-bold text-xs shadow-md shadow-pink-200 active:scale-95 transition">
+      <button onclick="closeRewardModal()" class="w-full py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-2xl font-bold text-xs shadow-md shadow-purple-200 active:scale-95 transition">
         เก็บใส่กระเป๋า 🫶
       </button>
     </div>
   </div>
 
   <script>
+    // --- 1. ข้อมูลการตั้งค่าระบบ ---
     const CORRECT_PIN = "371425"; 
     const START_DATE = new Date("2024-01-01T00:00:00"); 
 
     const COUPONS = [
-      "คูปอง: พาไปกินของอร่อยตามใจ 1 มื้อ 🍕",
-      "คูปอง: บริการนวดไหล่/นวดหลัง 30 นาที 💆‍♀️",
-      "คูปอง: ห้ามขัดใจแฟน 1 วันเต็มๆ 👑",
+      "คูปอง: เลี้ยงส้มตำปูปลาร้าเผ็ดน้อย 1 มื้อใหญ่ 🥗",
+      "คูปอง: พาไปตีแบดมินตัน+เก็บลูกแบดให้ 🏸",
+      "คูปอง: ห้ามขัดใจเกรป 1 วันเต็มๆ 👑",
       "คูปอง: ยกเว้นความผิด ง้อสำเร็จทันที 💖",
-      "คูปอง: ตามใจทุกอย่างภายใน 24 ชม. 🪄",
-      "คูปอง: พาไปคาเฟ่ถ่ายรูปสวยๆ ☕"
+      "คูปอง: บริการนวดไหล่/นวดหลัง 30 นาที 💆‍♀️",
+      "คูปอง: พาไปกินของอร่อยตามใจคนกินเก่ง 🍕"
+    ];
+
+    const CHAOKUAY_QUOTES = [
+      "โฮ่ง! พ่อเดียร์บอกว่าแม่เกรปน่ารักที่สุดในโลก 🐶",
+      "แม่เกรปกินเก่งแค่ไหน พ่อเดียร์ก็เลี้ยงไหวครับผม! 🍕",
+      "วันนี้แม่เกรปอย่าลืมกินส้มตำเผ็ดน้อยนะ โฮ่ง!",
+      "โฮ่ง! ห้ามขัดใจแม่เกรปเด็ดขาดเลยนะพ่อเดียร์ 👑",
+      "สุขสันต์วันครบรอบนะครับแม่เกรป รักกันนานๆ น้า 💜"
     ];
 
     let enteredPin = "";
     let currentSlide = 0;
     let isSpinning = false;
     let knobRotation = 0;
+    let bubbleTimeout = null;
 
-    // ระบบเสียงแบบ Safe Sound (ไม่ขัดขวางการทำงานแม้เบราว์เซอร์ไม่อนุญาต)
+    // --- Safe Sound Synthesizer ---
     let audioCtx = null;
     function playBeep(freq = 600, duration = 0.08) {
       try {
@@ -313,9 +525,7 @@
           osc.start();
           osc.stop(audioCtx.currentTime + duration);
         }
-      } catch (e) {
-        // เงียบไว้ ไม่ให้แอปพัง
-      }
+      } catch (e) {}
     }
 
     function playSuccessChime() {
@@ -326,7 +536,7 @@
       } catch (e) {}
     }
 
-    // --- ระบบ Passcode ---
+    // --- Passcode System ---
     function pressPin(num) {
       if (enteredPin.length < 6) {
         enteredPin += num;
@@ -350,12 +560,12 @@
       boxes.forEach((box, index) => {
         if (index < enteredPin.length) {
           box.innerText = "●";
-          box.classList.add('border-rose-400', 'bg-rose-100/70', 'scale-105');
-          box.classList.remove('border-rose-200', 'bg-pink-50/50');
+          box.classList.add('border-purple-500', 'bg-purple-100/70', 'scale-105');
+          box.classList.remove('border-purple-200', 'bg-purple-50/50');
         } else {
           box.innerText = "";
-          box.classList.remove('border-rose-400', 'bg-rose-100/70', 'scale-105');
-          box.classList.add('border-rose-200', 'bg-pink-50/50');
+          box.classList.remove('border-purple-500', 'bg-purple-100/70', 'scale-105');
+          box.classList.add('border-purple-200', 'bg-purple-50/50');
         }
       });
     }
@@ -375,7 +585,7 @@
       }
     }
 
-    // --- ตัวนับเวลาแบบเรียลไทม์ ---
+    // --- Real-time Counter ---
     function updateCounter() {
       const now = new Date();
       const diff = now - START_DATE;
@@ -393,7 +603,7 @@
     setInterval(updateCounter, 1000);
     updateCounter();
 
-    // --- Slider & Gestures ---
+    // --- Slider & Touch Gestures ---
     function showSlide(index) {
       const slides = document.querySelectorAll('.photo-slide');
       const dots = document.querySelectorAll('#slide-indicators span');
@@ -413,11 +623,11 @@
 
       dots.forEach((dot, i) => {
         if (i === index) {
-          dot.classList.remove('bg-rose-200');
-          dot.classList.add('bg-rose-500', 'w-4');
+          dot.classList.remove('bg-purple-200');
+          dot.classList.add('bg-purple-600', 'w-4');
         } else {
-          dot.classList.remove('bg-rose-500', 'w-4');
-          dot.classList.add('bg-rose-200', 'w-2.5');
+          dot.classList.remove('bg-purple-600', 'w-4');
+          dot.classList.add('bg-purple-200', 'w-2.5');
         }
       });
     }
@@ -456,7 +666,27 @@
       if (touchEndX > touchStartX + 40) prevSlide();
     }, { passive: true });
 
-    // --- Gachapon ---
+    // --- Photocard Opening Game (ฉีกซองการ์ด DMD) ---
+    function openPhotocardPack() {
+      playSuccessChime();
+      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+      const modal = document.getElementById('photocard-modal');
+      const box = document.getElementById('photocard-box');
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      box.classList.remove('scale-90');
+      box.classList.add('scale-100');
+    }
+
+    function closePhotocardModal() {
+      playBeep(400, 0.05);
+      const modal = document.getElementById('photocard-modal');
+      const box = document.getElementById('photocard-box');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      box.classList.remove('scale-100');
+      box.classList.add('scale-90');
+    }
+
+    // --- Gachapon Machine ---
     function spinGachapon() {
       if (isSpinning) return;
       isSpinning = true;
@@ -506,20 +736,34 @@
       box.classList.add('scale-90');
     }
 
-    // --- Touch Sparkles ---
-    const ICONS = ['💖', '🌸', '✨', '💕', '🌷', '🥰'];
+    // --- Mascot: น้องเฉาก๊วย ---
+    function petChaoKuay() {
+      playBeep(700, 0.08);
+      const bubble = document.getElementById('chaokuay-bubble');
+      const randomQuote = CHAOKUAY_QUOTES[Math.floor(Math.random() * CHAOKUAY_QUOTES.length)];
+      bubble.innerText = randomQuote;
+      bubble.classList.remove('opacity-0', 'pointer-events-none');
+
+      if (bubbleTimeout) clearTimeout(bubbleTimeout);
+      bubbleTimeout = setTimeout(() => {
+        bubble.classList.add('opacity-0', 'pointer-events-none');
+      }, 3500);
+    }
+
+    // --- Touch Sparkles (องุ่น, ดาว, หัวใจม่วง) ---
+    const ICONS = ['🍇', '✨', '💜', '⭐', '🤍', '🐶'];
     document.addEventListener('pointerdown', (e) => {
       if (e.target.closest('#pin-dots') || e.target.closest('button')) return;
 
-      const heart = document.createElement('div');
-      heart.className = 'tap-heart';
-      heart.innerText = ICONS[Math.floor(Math.random() * ICONS.length)];
-      heart.style.left = `${e.clientX}px`;
-      heart.style.top = `${e.clientY}px`;
-      heart.style.fontSize = `${Math.floor(Math.random() * 12 + 18)}px`;
-      document.body.appendChild(heart);
+      const sparkle = document.createElement('div');
+      sparkle.className = 'tap-sparkle';
+      sparkle.innerText = ICONS[Math.floor(Math.random() * ICONS.length)];
+      sparkle.style.left = `${e.clientX}px`;
+      sparkle.style.top = `${e.clientY}px`;
+      sparkle.style.fontSize = `${Math.floor(Math.random() * 12 + 18)}px`;
+      document.body.appendChild(sparkle);
 
-      setTimeout(() => heart.remove(), 900);
+      setTimeout(() => sparkle.remove(), 900);
     });
   </script>
 </body>
